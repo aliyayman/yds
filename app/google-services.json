@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "620112350674",
+    "project_id": "ydsapp-e3924",
+    "storage_bucket": "ydsapp-e3924.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:620112350674:android:aacc222107f616c8af4c0b",
+        "android_client_info": {
+          "package_name": "com.aliyayman.yds_app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDv1BAohBLy0vQv-Pzwn2u8k9tBBBdAVrI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

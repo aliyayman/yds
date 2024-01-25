@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/my_navigation"
+    app:startDestination="@id/categoryFragment">
+
+    <fragment
+        android:id="@+id/categoryFragment"
+        android:name="com.aliyayman.yds_app.view.CategoryFragment"
+        android:label="fragment_category"
+        tools:layout="@layout/fragment_category" >
+        <action
+            android:id="@+id/action_categoryFragment_to_wordsFragment"
+            app:destination="@id/wordsFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/wordsFragment"
+        android:name="com.aliyayman.yds_app.view.WordsFragment"
+        android:label="fragment_words"
+        tools:layout="@layout/fragment_words" >
+        <argument
+            android:name="categoryId"
+            app:argType="integer"
+            android:defaultValue="0" />
+    </fragment>
+    <fragment
+        android:id="@+id/testragment"
+        android:name="com.aliyayman.yds_app.view.TestFragment"
+        android:label="fragment_testragment"
+        tools:layout="@layout/fragment_test" />
+    <fragment
+        android:id="@+id/chooseFragment"
+        android:name="com.aliyayman.yds_app.view.ChooseFragment"
+        android:label="fragment_choose"
+        tools:layout="@layout/fragment_choose" />
+</navigation>
