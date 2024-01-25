@@ -34,7 +34,8 @@ class CategoryAdapter(val categoryList: ArrayList<Category>): RecyclerView.Adapt
     override fun onBindViewHolder(holder: CategoryViewHolder, position: Int) {
         holder.view.findViewById<TextView>(R.id.categoryTextView).text = categoryList[position].name
         holder.view.findViewById<CardView>(R.id.category_card).setOnClickListener{
-            val action = CategoryFragmentDirections.actionCategoryFragmentToWordsFragment(1)
+            val action = CategoryFragmentDirections.actionCategoryFragmentToWordsFragment(categoryList[position].categoryId)
+            println(categoryList[position].categoryId.toString() +"aaaa")
             it.findNavController().navigate(action)
         }
 

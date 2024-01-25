@@ -36,15 +36,17 @@ class WordsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        arguments?.let {
+            categoryId = args.categoryId
+            println("ıd:$categoryId")
+        }
         viewModel = ViewModelProvider(this).get(WordViewModel::class.java)
-        viewModel.refreshData()
+        viewModel.fromDataRemoteConfig(categoryId)
         binding.recyclerViewWord.layoutManager = LinearLayoutManager(context)
         binding.recyclerViewWord.adapter = wordAdapter
         observeLiveData()
 
-        arguments?.let {
-           categoryId = args.categoryId
-        }
+
 
 
     }
