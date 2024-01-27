@@ -15,10 +15,10 @@ import com.aliyayman.yds_app.viewmodel.WordViewModel
 
 class WordsFragment : Fragment() {
     private lateinit var binding: FragmentWordsBinding
-    private   var wordAdapter = WordAdapter(arrayListOf())
+    private var wordAdapter = WordAdapter(arrayListOf())
     private lateinit var viewModel: WordViewModel
     val args: WordsFragmentArgs by navArgs<WordsFragmentArgs>()
-    private  var categoryId = 0
+    private var categoryId = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -44,22 +44,51 @@ class WordsFragment : Fragment() {
         viewModel.fromDataRemoteConfig(categoryId)
         binding.recyclerViewWord.layoutManager = LinearLayoutManager(context)
         binding.recyclerViewWord.adapter = wordAdapter
+
+        binding.swipeRefreshLayout.setOnRefreshListener {
+            binding.recyclerViewWord.visibility = View.GONE
+            binding.errorWordTextview.visibility = View.GONE
+            binding.loadingWordProgressbar.visibility = View.VISIBLE
+            binding.swipeRefreshLayout.isRefreshing = false
+            viewModel.fromDataRemoteConfig(categoryId)
+
+        }
         observeLiveData()
-
-
-
 
     }
 
-  private  fun observeLiveData(){
-      viewModel.words.observe(viewLifecycleOwner, Observer {words->
-          words?.let {
-              binding.recyclerViewWord.visibility = View.VISIBLE
-              wordAdapter.updateWordList(words)
-          }
+    private fun observeLiveData() {
+        println("observeLiveData")
+        viewModel.words.observe(viewLifecycleOwner, Observer { words ->
+            words?.let {
+                binding.recyclerViewWord.visibility = View.VISIBLE
+                wordAdapter.updateWordList(words)
+            }
 
-      })
-  }
+        })
+        viewModel.categoryError.observe(viewLifecycleOwner, Observer { error ->
+            error?.let {
+                if (it) {
+                    binding.errorWordTextview.visibility = View.VISIBLE
+                    binding.loadingWordProgressbar.visibility = View.GONE
+                } else {
+                    binding.errorWordTextview.visibility = View.GONE
+                }
+            }
 
+        })
+        viewModel.categoryLoading.observe(viewLifecycleOwner, Observer { looding ->
+            looding?.let {
+                if (it) {
+                    binding.loadingWordProgressbar.visibility = View.VISIBLE
+                    binding.errorWordTextview.visibility = View.GONE
+                    binding.recyclerViewWord.visibility = View.GONE
+                } else {
+                    binding.loadingWordProgressbar.visibility = View.GONE
+                }
+            }
 
+        })
+
+    }
 }
