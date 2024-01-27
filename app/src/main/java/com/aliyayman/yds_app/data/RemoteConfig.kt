@@ -1,19 +1,31 @@
 package com.aliyayman.yds_app.data
 
-import com.google.firebase.Firebase
+import com.aliyayman.yds_app.R
+import com.google.firebase.BuildConfig
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig
-import com.google.firebase.remoteconfig.remoteConfig
-import com.google.firebase.remoteconfig.remoteConfigSettings
+import com.google.firebase.remoteconfig.FirebaseRemoteConfigSettings
+import com.google.firebase.remoteconfig.ktx.remoteConfig
+
 
 class RemoteConfig {
+    private lateinit var remoteConfig: FirebaseRemoteConfig
 
+    fun getInitial(): FirebaseRemoteConfig{
+        remoteConfig = com.google.firebase.ktx.Firebase.remoteConfig
+        val configSettings = com.google.firebase.remoteconfig.ktx.remoteConfigSettings {
+            minimumFetchIntervalInSeconds = 3600
+        }
+        remoteConfig.setConfigSettingsAsync(configSettings)
+        remoteConfig.setDefaultsAsync(R.xml.firebase_remote_config)
+        return  remoteConfig
+    }
 
-    /*private val firebaseRemoteConfig: FirebaseRemoteConfig by lazy {
+    private val firebaseRemoteConfig: FirebaseRemoteConfig by lazy {
         val builder = FirebaseRemoteConfigSettings.Builder()
         builder.minimumFetchIntervalInSeconds = (if (BuildConfig.DEBUG) 10 else 3600)
         FirebaseRemoteConfig.getInstance().apply {
             setConfigSettingsAsync(builder.build())
-            setDefaultsAsync(R.xml.remote_config_defaults)
+            setDefaultsAsync(R.xml.firebase_remote_config)
         }
     }
 
@@ -26,24 +38,12 @@ class RemoteConfig {
                 }
             }
 
-            companion object {
-         const val WEB_SITE_LINK_KEY = "web_site_link"
-         const val CLEANER_MONETIZATION = "clenaer_monetization"
-        }
 
-        fun getCleanerMonetization(): CleanerMonetization {
-        val json = firebaseRemoteConfig.getString(CLEANER_MONETIZATION)
-        json.takeIf { it.isNotBlank() }
-            ?.let {
-                return Gson().jsonToObjectOrNull(json, CleanerMonetization::class.java)
-                    .also { Timber.d("CLEANER_MONETIZATION 1: $it") }
-                    ?: CleanerMonetization().also { Timber.d("CLEANER_MONETIZATION 2: $it") }
-            } ?: kotlin.run {
-            return CleanerMonetization().also { Timber.d("CLEANER_MONETIZATION 3: $it") }
-        }
+
+
     }
 
 
 
-            */
+
 }

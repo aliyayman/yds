@@ -5,7 +5,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.cardview.widget.CardView
-import androidx.navigation.Navigation
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.aliyayman.yds_app.R
@@ -35,7 +34,6 @@ class CategoryAdapter(val categoryList: ArrayList<Category>): RecyclerView.Adapt
         holder.view.findViewById<TextView>(R.id.categoryTextView).text = categoryList[position].name
         holder.view.findViewById<CardView>(R.id.category_card).setOnClickListener{
             val action = CategoryFragmentDirections.actionCategoryFragmentToWordsFragment(categoryList[position].categoryId)
-            println(categoryList[position].categoryId.toString() +"aaaa")
             it.findNavController().navigate(action)
         }
 

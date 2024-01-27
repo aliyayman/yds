@@ -6,6 +6,7 @@
 
 
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+       android:id="@+id/swipeRefreshLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:context=".view.CategoryFragment">
@@ -27,6 +28,27 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/errorWordTextview"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Error! Try Again"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/recyclerViewWord"></TextView>
+
+            <ProgressBar
+                android:id="@+id/loadingWordProgressbar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintBottom_toBottomOf="@+id/recyclerViewWord"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/recyclerViewWord"></ProgressBar>
+
+
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
