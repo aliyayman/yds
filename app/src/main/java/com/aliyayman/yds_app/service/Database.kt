@@ -1,0 +1,33 @@
+package com.aliyayman.yds_app.service
+
+import android.content.Context
+import androidx.room.Database
+import androidx.room.Room
+import androidx.room.RoomDatabase
+import com.aliyayman.yds_app.model.Category
+import com.aliyayman.yds_app.model.Word
+
+@Database(entities = [Category::class, Word::class], version = 1)
+abstract class myDatabase : RoomDatabase() {
+    abstract fun categoryDao(): CategoryDao
+    abstract fun wordDao(): WordDao
+
+    //Singleton
+    companion object{
+    @Volatile    private var instance : myDatabase? = null
+
+        private val lock = Any()
+        operator fun invoke(context: Context) = instance ?: synchronized(lock){
+            instance ?: makeDatabase(context).also {
+                instance = it
+            }
+
+        }
+
+        private fun makeDatabase(context: Context) = Room.databaseBuilder(
+            context.applicationContext,myDatabase::class.java,"mydatabase")
+            .build()
+
+
+    }
+}
