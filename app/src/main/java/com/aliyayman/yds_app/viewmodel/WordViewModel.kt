@@ -1,27 +1,72 @@
 package com.aliyayman.yds_app.viewmodel
 
+import android.app.Application
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
 import com.aliyayman.yds_app.data.RemoteConfig
 import com.aliyayman.yds_app.model.Word
+import com.aliyayman.yds_app.service.myDatabase
+import com.aliyayman.yds_app.util.CustomSharedPreferences
+import kotlinx.coroutines.launch
 import org.json.JSONArray
 import java.lang.Exception
 
 
-class WordViewModel : ViewModel() {
+class WordViewModel(application: Application) : BaseViewModel(application) {
     val words = MutableLiveData<List<Word>>()
-    val categoryError = MutableLiveData<Boolean>()
-    val categoryLoading = MutableLiveData<Boolean>()
+    val wordError = MutableLiveData<Boolean>()
+    val wordLoading = MutableLiveData<Boolean>()
     private var wordList = ArrayList<Word>()
     private var rc = RemoteConfig()
+    private var customSharedPreferences = CustomSharedPreferences(getApplication())
+    private var refreshTime = 10 * 60 * 1000 * 1000 * 1000L
 
 
-    fun fromDataRemoteConfig(id: Int) {
-        categoryError.value = false
-        categoryLoading.value = false
-        val categoryName = findCategoryName(id)
-        fetchData(categoryName)
-        println("fromDataremoteConfig")
+    fun refreshWord(id: Int) {
+        val updateTime = customSharedPreferences.getTime()
+        if (updateTime != null && updateTime != 0L && System.nanoTime() - updateTime < refreshTime) {
+         val sqlList =  getFromSQlite(id)
+            if (sqlList == null|| sqlList.isEmpty()){
+                val categoryName = findCategoryName(id)
+                getFromRemoteConfig(categoryName)
+            }else {
+                getFromSQlite(id)
+            }
+        }
+        else {
+            val categoryName = findCategoryName(id)
+            getFromRemoteConfig(categoryName)
+        }
+    }
+
+    private fun getFromSQlite(id: Int) :List<Word> {
+        wordLoading.value = true
+        launch {
+            val wordlist = myDatabase(getApplication()).wordDao().getWordFromCategory(id)
+            showWord(wordlist)
+            println("sqlden gelen words:")
+            println(wordlist.toString())
+        }
+        return wordList
+    }
+
+    private fun storeInSQlite(list: List<Word>) {
+        launch {
+            val dao = myDatabase(getApplication()).wordDao()
+            val listLong = dao.insertAll(*list.toTypedArray())
+            var i = 0
+            while (i < list.size) {
+                list[i].id = listLong[i].toInt()
+                i += 1
+            }
+            showWord(list)
+        }
+        customSharedPreferences.saveTime(System.nanoTime())
+    }
+
+    private fun showWord(wordlist: List<Word>) {
+        words.value = wordlist
+        wordError.value = false
+        wordLoading.value = false
     }
 
     private fun findCategoryName(id: Int): String {
@@ -35,7 +80,8 @@ class WordViewModel : ViewModel() {
         }
     }
 
-    private fun fetchData(name: String) {
+    private fun getFromRemoteConfig(name: String) {
+        println("remoteconfigden gelen word:")
         var remoteConfig = rc.getInitial()
         remoteConfig.fetchAndActivate().addOnCompleteListener {
             if (it.isSuccessful) {
@@ -52,10 +98,12 @@ class WordViewModel : ViewModel() {
                         val word = Word(ing, tc, isFavorite, categoryId)
                         wordList.add(word)
                     }
-                    words.value = wordList
+                    storeInSQlite(wordList)
 
                 } catch (e: Exception) {
                     println(e.message)
+                    wordError.value = true
+                    wordLoading.value = false
                 }
             } else {
                 println("veriler gelmedi")

@@ -41,7 +41,7 @@ class WordsFragment : Fragment() {
             println("ıd:$categoryId")
         }
         viewModel = ViewModelProvider(this).get(WordViewModel::class.java)
-        viewModel.fromDataRemoteConfig(categoryId)
+        viewModel.refreshWord(categoryId)
         binding.recyclerViewWord.layoutManager = LinearLayoutManager(context)
         binding.recyclerViewWord.adapter = wordAdapter
 
@@ -50,7 +50,7 @@ class WordsFragment : Fragment() {
             binding.errorWordTextview.visibility = View.GONE
             binding.loadingWordProgressbar.visibility = View.VISIBLE
             binding.swipeRefreshLayout.isRefreshing = false
-            viewModel.fromDataRemoteConfig(categoryId)
+            viewModel.refreshWord(categoryId)
 
         }
         observeLiveData()
@@ -58,7 +58,6 @@ class WordsFragment : Fragment() {
     }
 
     private fun observeLiveData() {
-        println("observeLiveData")
         viewModel.words.observe(viewLifecycleOwner, Observer { words ->
             words?.let {
                 binding.recyclerViewWord.visibility = View.VISIBLE
@@ -66,7 +65,7 @@ class WordsFragment : Fragment() {
             }
 
         })
-        viewModel.categoryError.observe(viewLifecycleOwner, Observer { error ->
+        viewModel.wordError.observe(viewLifecycleOwner, Observer { error ->
             error?.let {
                 if (it) {
                     binding.errorWordTextview.visibility = View.VISIBLE
@@ -77,7 +76,7 @@ class WordsFragment : Fragment() {
             }
 
         })
-        viewModel.categoryLoading.observe(viewLifecycleOwner, Observer { looding ->
+        viewModel.wordLoading.observe(viewLifecycleOwner, Observer { looding ->
             looding?.let {
                 if (it) {
                     binding.loadingWordProgressbar.visibility = View.VISIBLE

@@ -13,7 +13,6 @@ interface WordDao {
 
     @Query("SELECT * FROM word")
     suspend fun getAllWords(): List<Word>
-
     @Query("SELECT * FROM word WHERE categoryId=:categoryid")
     suspend fun getWordFromCategory(categoryid: Int): List<Word>
 

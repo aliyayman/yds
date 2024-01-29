@@ -38,7 +38,7 @@ class CategoryFragment : Fragment() {
 
 
         viewModel = ViewModelProvider(this).get(CategoryViewModel::class.java)
-        viewModel.resfreshData()
+        viewModel.resfreshCategory()
         binding.recyclerViewCategory.layoutManager = LinearLayoutManager(context)
         binding.recyclerViewCategory.adapter = categoryAdapter
 
