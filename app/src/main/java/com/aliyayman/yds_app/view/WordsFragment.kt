@@ -1,6 +1,8 @@
 package com.aliyayman.yds_app.view
 
 import android.os.Bundle
+import android.speech.tts.TextToSpeech
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,13 +14,15 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.aliyayman.yds_app.adapter.WordAdapter
 import com.aliyayman.yds_app.databinding.FragmentWordsBinding
 import com.aliyayman.yds_app.viewmodel.WordViewModel
+import java.util.Locale
 
-class WordsFragment : Fragment() {
+class WordsFragment : Fragment(), TextToSpeech.OnInitListener {
     private lateinit var binding: FragmentWordsBinding
     private var wordAdapter = WordAdapter(arrayListOf())
     private lateinit var viewModel: WordViewModel
     val args: WordsFragmentArgs by navArgs<WordsFragmentArgs>()
     private var categoryId = 0
+    private lateinit var tts: TextToSpeech
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -26,8 +30,7 @@ class WordsFragment : Fragment() {
     }
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
+        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View? {
         binding = FragmentWordsBinding.inflate(layoutInflater)
         return binding.root
@@ -40,21 +43,29 @@ class WordsFragment : Fragment() {
             categoryId = args.categoryId
             println("ıd:$categoryId")
         }
+        tts = TextToSpeech(requireContext(), this)
         viewModel = ViewModelProvider(this).get(WordViewModel::class.java)
         viewModel.refreshWord(categoryId)
         binding.recyclerViewWord.layoutManager = LinearLayoutManager(context)
         binding.recyclerViewWord.adapter = wordAdapter
+        wordAdapter.onItemClicked = { word ->
 
-        binding.swipeRefreshLayout.setOnRefreshListener {
+            speakOut(word)
+
+        }
+            binding.swipeRefreshLayout.setOnRefreshListener {
             binding.recyclerViewWord.visibility = View.GONE
             binding.errorWordTextview.visibility = View.GONE
             binding.loadingWordProgressbar.visibility = View.VISIBLE
             binding.swipeRefreshLayout.isRefreshing = false
             viewModel.refreshWord(categoryId)
-
         }
         observeLiveData()
 
+    }
+
+    private fun speakOut(name: String) {
+        tts.speak(name, TextToSpeech.QUEUE_FLUSH, null, "")
     }
 
     private fun observeLiveData() {
@@ -89,5 +100,16 @@ class WordsFragment : Fragment() {
 
         })
 
+    }
+    override fun onInit(status: Int) {
+        if (status == TextToSpeech.SUCCESS) {
+            val result = tts!!.setLanguage(Locale.US)
+
+            if (result == TextToSpeech.LANG_MISSING_DATA || result == TextToSpeech.LANG_NOT_SUPPORTED) {
+                Log.e("TTS", "The Language not supported!")
+            } else {
+                Log.e("TTS", "The Language not supported!")
+            }
+        }
     }
 }
