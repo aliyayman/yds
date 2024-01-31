@@ -19,6 +19,9 @@ interface WordDao {
     @Query("SELECT * FROM word WHERE categoryId=:categoryid ORDER BY RANDOM() LIMIT 10")
     suspend fun getWordTen(categoryid: Int): List<Word>
 
+    @Query("SELECT * FROM word WHERE id!=:wordID ORDER BY RANDOM() LIMIT 3")
+    suspend fun getFaultWord3(wordID: Int): List<Word>
+
     @Delete
     suspend fun delete(word: Word)
 

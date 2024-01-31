@@ -7,10 +7,10 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.aliyayman.yds_app.adapter.CategoryAdapter
 import com.aliyayman.yds_app.databinding.FragmentCategoryBinding
-import com.aliyayman.yds_app.model.Category
 import com.aliyayman.yds_app.viewmodel.CategoryViewModel
 
 
@@ -41,6 +41,11 @@ class CategoryFragment : Fragment() {
         viewModel.resfreshCategory()
         binding.recyclerViewCategory.layoutManager = LinearLayoutManager(context)
         binding.recyclerViewCategory.adapter = categoryAdapter
+
+        binding.testButton.setOnClickListener {
+            val action = CategoryFragmentDirections.actionCategoryFragmentToTestragment(1)
+            it.findNavController().navigate(action)
+        }
 
         observeLiveData()
 

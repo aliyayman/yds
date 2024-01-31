@@ -26,16 +26,13 @@ class WordsFragment : Fragment(), TextToSpeech.OnInitListener {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
     }
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View? {
         binding = FragmentWordsBinding.inflate(layoutInflater)
         return binding.root
     }
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -61,20 +58,16 @@ class WordsFragment : Fragment(), TextToSpeech.OnInitListener {
             viewModel.refreshWord(categoryId)
         }
         observeLiveData()
-
     }
-
     private fun speakOut(name: String) {
         tts.speak(name, TextToSpeech.QUEUE_FLUSH, null, "")
     }
-
     private fun observeLiveData() {
         viewModel.words.observe(viewLifecycleOwner, Observer { words ->
             words?.let {
                 binding.recyclerViewWord.visibility = View.VISIBLE
                 wordAdapter.updateWordList(words)
             }
-
         })
         viewModel.wordError.observe(viewLifecycleOwner, Observer { error ->
             error?.let {
@@ -85,7 +78,6 @@ class WordsFragment : Fragment(), TextToSpeech.OnInitListener {
                     binding.errorWordTextview.visibility = View.GONE
                 }
             }
-
         })
         viewModel.wordLoading.observe(viewLifecycleOwner, Observer { looding ->
             looding?.let {
@@ -97,9 +89,7 @@ class WordsFragment : Fragment(), TextToSpeech.OnInitListener {
                     binding.loadingWordProgressbar.visibility = View.GONE
                 }
             }
-
         })
-
     }
     override fun onInit(status: Int) {
         if (status == TextToSpeech.SUCCESS) {
