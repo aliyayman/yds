@@ -20,12 +20,12 @@ class UploadWorker(val appContext: Context, workerParams: WorkerParameters) :
     Worker(appContext, workerParams), CoroutineScope {
     private var wordList = ArrayList<Word>()
     private var rc = RemoteConfig()
-    private val job = Job()
     private val DATABASE_NAME = "allWords"
 
 
     override fun doWork(): Result {
         getFromRemoteConfig(DATABASE_NAME)
+        println("do work çalıştı")
         return Result.success()
     }
 
@@ -73,9 +73,8 @@ class UploadWorker(val appContext: Context, workerParams: WorkerParameters) :
             println("kelimeler sqlite eklendi")
         }
     }
-
     override val coroutineContext: CoroutineContext
-        get() = job + Dispatchers.Main
+        get() =  Dispatchers.IO
 
 }
 
