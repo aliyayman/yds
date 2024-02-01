@@ -34,9 +34,8 @@ class TestFragment : Fragment(), CoroutineScope {
         super.onViewCreated(view, savedInstanceState)
         viewModel = ViewModelProvider(this).get(TestViewModel::class.java)
 
-        launch {
-            writeQuestion()
-        }
+        writeQuestion()
+
         binding.buttonA.setOnClickListener { checkAnswer(binding.buttonA, view) }
         binding.buttonB.setOnClickListener { checkAnswer(binding.buttonB, view) }
         binding.buttonC.setOnClickListener { checkAnswer(binding.buttonC, view) }
