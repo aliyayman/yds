@@ -36,6 +36,9 @@
             android:name="wordID"
             app:argType="integer"
             android:defaultValue="0" />
+        <action
+            android:id="@+id/action_testragment_to_resultFragment"
+            app:destination="@id/resultFragment" />
     </fragment>
     <fragment
         android:id="@+id/chooseFragment"
@@ -50,5 +53,18 @@
         <action
             android:id="@+id/action_splashFragment_to_categoryFragment"
             app:destination="@id/categoryFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/resultFragment"
+        android:name="com.aliyayman.yds_app.view.ResultFragment"
+        android:label="fragment_result"
+        tools:layout="@layout/fragment_result" >
+        <argument
+            android:name="CorrectNumber"
+            app:argType="integer"
+            android:defaultValue="0" />
+        <action
+            android:id="@+id/action_resultFragment_to_testragment"
+            app:destination="@id/testragment" />
     </fragment>
 </navigation>
