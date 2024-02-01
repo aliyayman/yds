@@ -5,28 +5,21 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
-import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import com.aliyayman.yds_app.R
-import com.aliyayman.yds_app.adapter.WordAdapter
+import androidx.navigation.Navigation
 import com.aliyayman.yds_app.databinding.FragmentTestBinding
-import com.aliyayman.yds_app.service.myDatabase
 import com.aliyayman.yds_app.viewmodel.TestViewModel
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.launch
+import kotlin.coroutines.CoroutineContext
 
-class TestFragment : Fragment() {
-
+class TestFragment : Fragment(), CoroutineScope {
     private lateinit var binding: FragmentTestBinding
     private lateinit var viewModel: TestViewModel
-    private lateinit var buttonA: Button
-    private lateinit var buttonB: Button
-    private lateinit var buttonC: Button
-    private lateinit var buttonD: Button
-    private lateinit var textViewsoru: TextView
-    private lateinit var textViewdogru: TextView
-    private lateinit var textViewyanlis: TextView
-    private lateinit var textViewkelime: TextView
-    private lateinit var textViewAnswer: TextView
+    private val job = Job()
 
 
     override fun onCreateView(
@@ -39,57 +32,59 @@ class TestFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-
         viewModel = ViewModelProvider(this).get(TestViewModel::class.java)
 
-        val mlist = viewModel.init()
-        println("testfragment:")
-        println(mlist)
-
-
-        //  soruYukle()
-
-
-
-        binding.buttonA.setOnClickListener { cevapKontrol(buttonA) }
-        binding.buttonB.setOnClickListener { cevapKontrol(buttonB) }
-        binding.buttonC.setOnClickListener { cevapKontrol(buttonC) }
-        binding.buttonD.setOnClickListener { cevapKontrol(buttonD) }
+        launch {
+            writeQuestion()
+        }
+        binding.buttonA.setOnClickListener { checkAnswer(binding.buttonA, view) }
+        binding.buttonB.setOnClickListener { checkAnswer(binding.buttonB, view) }
+        binding.buttonC.setOnClickListener { checkAnswer(binding.buttonC, view) }
+        binding.buttonD.setOnClickListener { checkAnswer(binding.buttonD, view) }
     }
 
-    private fun soruYukle() {
-        val (dogruSoru, seceneklerList) = viewModel.soruYuklee()
-        println("seceneklerList:" + seceneklerList)
+    private fun writeQuestion() {
+        launch {
+            viewModel.init()
+            val (correctQuestion, optionsList) = viewModel.getQuestion()
 
-        binding.textViewsoru.text = "${viewModel.soruSayac + 1}. SORU"
-        binding.textViewdogru.text = "Doğru:${viewModel.dogruSayac}"
-        binding.textViewyanlis.text = "Yanlış:${viewModel.yanlisSayac}"
-        binding.textViewkelime.text = dogruSoru.ing
+            binding.textViewsoru.text = "${viewModel.questionCounter + 1}. QUESTION"
+            binding.textViewCorrect.text = "Correct:${viewModel.correctCounter}"
+            binding.textViewMistake.text = "Mistake:${viewModel.mistakeCounter}"
+            binding.textViewWord.text = correctQuestion.ing
 
-        binding.buttonA.text = seceneklerList[0].tc
-        binding.buttonB.text = seceneklerList[1].tc
-        binding.buttonC.text = seceneklerList[2].tc
-        binding.buttonD.text = seceneklerList[3].tc
+            binding.buttonA.text = optionsList[0].tc
+            binding.buttonB.text = optionsList[1].tc
+            binding.buttonC.text = optionsList[2].tc
+            binding.buttonD.text = optionsList[3].tc
+        }
     }
 
-    private fun cevapKontrol(button: Button) {
+    private fun checkAnswer(button: Button, view: View) {
         val selectedAnswer = button.text.toString()
-        val dogruMu = viewModel.dogruKontrol(selectedAnswer)
+        val correctAnswer = viewModel.correctQuestion.tc
+        val isCorrect = viewModel.checkCorrect(selectedAnswer)
 
-        if (dogruMu) {
-            textViewAnswer.text = "Doğru Cevap!"
+        if (isCorrect) {
+            binding.textViewAnswer.text = ""
         } else {
-            textViewAnswer.text = "Yanlış Cevap!"
+            binding.textViewAnswer.text = "Answer: $correctAnswer"
         }
 
         if (viewModel.isQuizFinished()) {
-            val (dogruSayac, yanlisSayac) = viewModel.getScores()
-            println("sınav bitti")
-            // Sınav bittiğinde yapılacak işlemler
+            val action =
+                TestFragmentDirections.actionTestragmentToResultFragment(viewModel.correctCounter)
+            Navigation.findNavController(view).navigate(action)
+
         } else {
             viewModel.nextQuestion()
-            soruYukle()
+            writeQuestion()
         }
     }
+    override fun onDestroy() {
+        super.onDestroy()
+        job.cancel()
+    }
+    override val coroutineContext: CoroutineContext
+        get() = job + Dispatchers.Main
 }
