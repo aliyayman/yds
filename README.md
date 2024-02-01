@@ -5,5 +5,6 @@ MVVM Pattern<br>
 4-Data binding,view binding<br>
 5-Coroutine<br>
 6-Live data<br>
-7-Sharedpreferences
+7-Sharedpreferences<br>
+8-Work Manager
 
