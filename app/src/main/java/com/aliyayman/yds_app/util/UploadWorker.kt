@@ -49,7 +49,7 @@ class UploadWorker(val appContext: Context, workerParams: WorkerParameters) :
                         wordList.add(word)
                     }
                     println("remoteconfigden gelen word:")
-                    println(wordList)
+                    println(wordList.size)
                     storeInRoom(wordList)
 
                 } catch (e: Exception) {

@@ -24,8 +24,8 @@ class WordViewModel(application: Application) : BaseViewModel(application) {
             showWord(sqlList)
             println("sqlden gelen wordssss:")
             mylist = sqlList as ArrayList<Word>
-            println(mylist)
-            println("******")
+            println(mylist.size)
+
         }
     }
     private fun showWord(wordlist: List<Word>) {

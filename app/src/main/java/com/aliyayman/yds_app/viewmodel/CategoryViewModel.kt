@@ -20,30 +20,27 @@ class CategoryViewModel(application: Application) : BaseViewModel(application) {
     fun resfreshCategory() {
         val updateTime = customSharedPreferences.getTime()
         if (updateTime != null && updateTime != 0L && System.nanoTime() - updateTime < refreshTime) {
-            getDataFromSQLite()
+            getDataFromRoom()
         } else {
             getFromRemoteConfig()
         }
     }
 
-    private fun getDataFromSQLite() {
+    private fun getDataFromRoom() {
         launch {
             val categories = myDatabase(getApplication()).categoryDao().getAllCategories()
             showData(categories)
-            println("sql:")
-            println(categories.toString())
         }
     }
 
-    private fun storeInSQLite(list: List<Category>) {
+    private fun storeInRoom(list: List<Category>) {
         launch {
             val dao = myDatabase(getApplication()).categoryDao()
             dao.deleteAllCategory()
             dao.insertAll(*list.toTypedArray())
-            val categorList = dao.getAllCategories()
             showData(categoryList)
-            println("sqliete")
-            println(categorList.toString())
+            println("room:")
+            println(categoryList.size)
         }
 
         customSharedPreferences.saveTime(System.nanoTime())
@@ -74,7 +71,7 @@ class CategoryViewModel(application: Application) : BaseViewModel(application) {
                         val category = Category(categoryId, name)
                         categoryList.add(category)
                     }
-                    storeInSQLite(categoryList)
+                    storeInRoom(categoryList)
                 } catch (e: Exception) {
                     println(e.message)
                     categoryError.value = true
