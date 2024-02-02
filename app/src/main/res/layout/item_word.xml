@@ -3,6 +3,12 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:android="http://schemas.android.com/apk/res/android">
 
+    <data>
+        <variable
+            name="word"
+            type="com.aliyayman.yds_app.model.Word" />
+    </data>
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
@@ -31,7 +37,7 @@
                     android:foregroundGravity="left"
                     android:foregroundTint="#FFFFFF"
                     android:gravity="left"
-                    android:text="ingilizce"
+                    android:text="@{word.ing}"
                     android:textColor="#1A237E"
                     android:textSize="24sp"
                     app:layout_constraintStart_toStartOf="parent"
@@ -44,7 +50,7 @@
                     android:layout_marginStart="16dp"
                     android:foregroundGravity="left"
                     android:gravity="left"
-                    android:text="Türkçe"
+                    android:text="@{word.tc}"
                     android:textColor="#B71C1C"
                     android:textSize="22sp"
                     app:layout_constraintBottom_toBottomOf="parent"

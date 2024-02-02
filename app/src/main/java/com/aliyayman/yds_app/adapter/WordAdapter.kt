@@ -1,35 +1,42 @@
 package com.aliyayman.yds_app.adapter
 
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
+import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.aliyayman.yds_app.R
+import com.aliyayman.yds_app.databinding.ItemWordBinding
 import com.aliyayman.yds_app.model.Word
 
-class WordAdapter(val wordList : ArrayList<Word>) :RecyclerView.Adapter<WordAdapter.WordViewHolder>() {
+class WordAdapter(
+    val wordList: ArrayList<Word>,
+    var onItemClicked: ((word: String) -> Unit)? = null,
+) : RecyclerView.Adapter<WordAdapter.WordViewHolder>() {
 
-    class WordViewHolder(val view: View) : RecyclerView.ViewHolder(view) {
+    class WordViewHolder(val view: ItemWordBinding) : RecyclerView.ViewHolder(view.root) {
 
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): WordViewHolder {
-       val inflater = LayoutInflater.from(parent.context)
-        val view = inflater.inflate(R.layout.item_word,parent,false)
+        val inflater = LayoutInflater.from(parent.context)
+        val view =
+            DataBindingUtil.inflate<ItemWordBinding>(inflater, R.layout.item_word, parent, false)
         return WordViewHolder(view)
     }
 
     override fun getItemCount(): Int {
-       return wordList.size
+        return wordList.size
     }
 
     override fun onBindViewHolder(holder: WordViewHolder, position: Int) {
-      holder.view.findViewById<TextView>(R.id.textViewTc).text = wordList[position].tc
-      holder.view.findViewById<TextView>(R.id.textViewIng).text = wordList[position].ing
+        holder.view.word = wordList[position]
+        holder.view.imageViewSound.setOnClickListener {
+            onItemClicked?.invoke(wordList[position].ing.toString())
+            println(wordList[position].ing + " clicked")
+        }
     }
 
-    fun updateWordList(newWordList: List<Word>){
+    fun updateWordList(newWordList: List<Word>) {
         wordList.clear()
         wordList.addAll(newWordList)
         notifyDataSetChanged()

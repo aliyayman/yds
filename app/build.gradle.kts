@@ -52,6 +52,7 @@ dependencies {
     val roomVersion = "2.6.1"
     val preferencesVersion = "1.2.1"
     val glideVersion = "4.16.0"
+    val work_version = "2.9.0"
 
 
     implementation("androidx.core:core-ktx:1.12.0")
@@ -87,6 +88,8 @@ dependencies {
     implementation(platform("com.google.firebase:firebase-bom:32.7.1"))
     implementation("com.google.firebase:firebase-config")
     implementation("com.google.firebase:firebase-analytics")
+
+    implementation("androidx.work:work-runtime-ktx:$work_version")
 
 
 }

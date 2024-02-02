@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/my_navigation"
-    app:startDestination="@id/categoryFragment">
+    app:startDestination="@id/splashFragment">
 
     <fragment
         android:id="@+id/categoryFragment"
@@ -13,6 +13,9 @@
         <action
             android:id="@+id/action_categoryFragment_to_wordsFragment"
             app:destination="@id/wordsFragment" />
+        <action
+            android:id="@+id/action_categoryFragment_to_testragment"
+            app:destination="@id/testragment" />
     </fragment>
     <fragment
         android:id="@+id/wordsFragment"
@@ -28,10 +31,40 @@
         android:id="@+id/testragment"
         android:name="com.aliyayman.yds_app.view.TestFragment"
         android:label="fragment_testragment"
-        tools:layout="@layout/fragment_test" />
+        tools:layout="@layout/fragment_test" >
+        <argument
+            android:name="wordID"
+            app:argType="integer"
+            android:defaultValue="0" />
+        <action
+            android:id="@+id/action_testragment_to_resultFragment"
+            app:destination="@id/resultFragment" />
+    </fragment>
     <fragment
         android:id="@+id/chooseFragment"
         android:name="com.aliyayman.yds_app.view.ChooseFragment"
         android:label="fragment_choose"
         tools:layout="@layout/fragment_choose" />
+    <fragment
+        android:id="@+id/splashFragment"
+        android:name="com.aliyayman.yds_app.view.SplashFragment"
+        android:label="fragment_splash"
+        tools:layout="@layout/fragment_splash" >
+        <action
+            android:id="@+id/action_splashFragment_to_categoryFragment"
+            app:destination="@id/categoryFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/resultFragment"
+        android:name="com.aliyayman.yds_app.view.ResultFragment"
+        android:label="fragment_result"
+        tools:layout="@layout/fragment_result" >
+        <argument
+            android:name="CorrectNumber"
+            app:argType="integer"
+            android:defaultValue="0" />
+        <action
+            android:id="@+id/action_resultFragment_to_testragment"
+            app:destination="@id/testragment" />
+    </fragment>
 </navigation>
