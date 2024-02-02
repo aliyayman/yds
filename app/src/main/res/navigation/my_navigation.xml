@@ -16,6 +16,9 @@
         <action
             android:id="@+id/action_categoryFragment_to_testragment"
             app:destination="@id/testragment" />
+        <action
+            android:id="@+id/action_categoryFragment_to_chooseFragment"
+            app:destination="@id/chooseFragment" />
     </fragment>
     <fragment
         android:id="@+id/wordsFragment"

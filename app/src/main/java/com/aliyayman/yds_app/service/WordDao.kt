@@ -18,6 +18,8 @@ interface WordDao {
 
     @Query("SELECT * FROM word  ORDER BY RANDOM() LIMIT 10")
     suspend fun getWordTen(): List<Word>
+    @Query("SELECT * FROM word  ORDER BY RANDOM() LIMIT 5")
+    suspend fun getWordFive(): List<Word>
 
     @Query("SELECT * FROM word WHERE id!=:wordID ORDER BY RANDOM() LIMIT 3")
     suspend fun getFaultWord3(wordID: Int): List<Word>

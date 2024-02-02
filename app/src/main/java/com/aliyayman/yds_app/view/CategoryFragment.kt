@@ -36,7 +36,6 @@ class CategoryFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-
         viewModel = ViewModelProvider(this).get(CategoryViewModel::class.java)
         viewModel.resfreshCategory()
         binding.recyclerViewCategory.layoutManager = LinearLayoutManager(context)
@@ -46,10 +45,12 @@ class CategoryFragment : Fragment() {
             val action = CategoryFragmentDirections.actionCategoryFragmentToTestragment(1)
             it.findNavController().navigate(action)
         }
+        binding.test2Button.setOnClickListener {
+            val action = CategoryFragmentDirections.actionCategoryFragmentToChooseFragment()
+            it.findNavController().navigate(action)
+        }
 
         observeLiveData()
-
-
 
     }
 
@@ -61,7 +62,6 @@ class CategoryFragment : Fragment() {
 
             }
         })
-
         viewModel.categoryError.observe(viewLifecycleOwner, Observer {error->
             error?.let {
                 if (it){
@@ -83,7 +83,6 @@ class CategoryFragment : Fragment() {
                     binding.loadingProgressbar.visibility = View.GONE
                 }
             }
-
         })
     }
 

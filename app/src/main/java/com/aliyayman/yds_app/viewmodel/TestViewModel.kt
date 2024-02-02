@@ -3,6 +3,7 @@ package com.aliyayman.yds_app.viewmodel
 import android.app.Application
 import com.aliyayman.yds_app.model.Word
 import com.aliyayman.yds_app.service.myDatabase
+import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
@@ -16,9 +17,12 @@ class TestViewModel(application: Application) : BaseViewModel(application) {
     var correctCounter = 0
     private val optionRandomList = HashSet<Word>()
     private val optionList = ArrayList<Word>()
+    private val exceptionHandler = CoroutineExceptionHandler{coroutineContext, throwable ->
+        println("Error:${throwable.localizedMessage}")
+    }
 
     suspend fun init() {
-        withContext(Dispatchers.IO) {
+        withContext(Dispatchers.IO + exceptionHandler) {
             questionList =
                 myDatabase(getApplication()).wordDao().getWordTen().toList() as ArrayList<Word>
             correctQuestion = questionList[questionCounter]
