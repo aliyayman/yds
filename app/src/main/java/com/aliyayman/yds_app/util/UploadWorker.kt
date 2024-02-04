@@ -6,10 +6,8 @@ import androidx.work.WorkerParameters
 import com.aliyayman.yds_app.data.RemoteConfig
 import com.aliyayman.yds_app.model.Word
 import com.aliyayman.yds_app.service.myDatabase
-import com.aliyayman.yds_app.viewmodel.WordViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import org.json.JSONArray
 import java.lang.Exception
@@ -31,7 +29,6 @@ class UploadWorker(val appContext: Context, workerParams: WorkerParameters) :
 
 
     private fun getFromRemoteConfig(name: String) {
-
         var remoteConfig = rc.getInitial()
         remoteConfig.fetchAndActivate().addOnCompleteListener {
             if (it.isSuccessful) {

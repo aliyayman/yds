@@ -4,8 +4,10 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.Navigation
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.navArgs
 import com.aliyayman.yds_app.databinding.FragmentResultBinding
@@ -42,5 +44,19 @@ class ResultFragment : Fragment() {
                     .navigate(ResultFragmentDirections.actionResultFragmentToTestragment(1))
             }
         }
+
+        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, callback)
     }
+
+    val callback = object : OnBackPressedCallback(true) {
+        override fun handleOnBackPressed() {
+            try {
+                val action = ResultFragmentDirections.actionResultFragmentToCategoryFragment()
+                Navigation.findNavController(requireView()).navigate(action)
+            } catch (e: Exception) {
+            }
+        }
+    }
+
+
 }

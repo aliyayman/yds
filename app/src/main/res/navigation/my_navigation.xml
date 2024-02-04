@@ -55,7 +55,8 @@
         tools:layout="@layout/fragment_splash" >
         <action
             android:id="@+id/action_splashFragment_to_categoryFragment"
-            app:destination="@id/categoryFragment" />
+            app:destination="@id/categoryFragment"
+            app:popUpToInclusive="true" />
     </fragment>
     <fragment
         android:id="@+id/resultFragment"
@@ -69,5 +70,10 @@
         <action
             android:id="@+id/action_resultFragment_to_testragment"
             app:destination="@id/testragment" />
+        <action
+            android:id="@+id/action_resultFragment_to_categoryFragment"
+            app:destination="@id/categoryFragment"
+            app:popUpTo="@id/categoryFragment"
+            app:popUpToInclusive="true" />
     </fragment>
 </navigation>
