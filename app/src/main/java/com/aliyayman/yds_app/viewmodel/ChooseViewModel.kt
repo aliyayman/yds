@@ -1,20 +1,15 @@
 package com.aliyayman.yds_app.viewmodel
 
 import android.app.Application
-import com.aliyayman.yds_app.model.Word
 import com.aliyayman.yds_app.model.WordRecyler
 import com.aliyayman.yds_app.service.myDatabase
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import java.util.Collections
+
 
 class ChooseViewModel(application: Application) : BaseViewModel(application){
       var wordList = ArrayList<WordRecyler>()
       private var randomList = ArrayList<WordRecyler>()
-
-
-
-
 
     suspend fun getWords() : ArrayList<WordRecyler>{
         withContext(Dispatchers.IO){
