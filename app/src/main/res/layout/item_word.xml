@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout
+<layout xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:android="http://schemas.android.com/apk/res/android">
 
@@ -58,17 +58,6 @@
                     app:layout_constraintTop_toBottomOf="@+id/textViewIng" />
 
                 <ImageView
-                    android:id="@+id/imageViewmore"
-                    android:layout_width="43dp"
-                    android:layout_height="26dp"
-                    android:layout_marginTop="16dp"
-                    android:layout_marginEnd="8dp"
-                    android:contentDescription="TODO"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:srcCompat="@drawable/more_pic" />
-
-                <ImageView
                     android:id="@+id/imageViewSound"
                     android:layout_width="33dp"
                     android:layout_height="27dp"
@@ -76,18 +65,19 @@
                     android:layout_marginTop="16dp"
                     app:layout_constraintStart_toEndOf="@+id/textViewIng"
                     app:layout_constraintTop_toTopOf="parent"
-                    app:srcCompat="@drawable/sound_pic" />
+                    app:srcCompat="@drawable/ic_sound" />
 
                 <ImageView
-                    android:id="@+id/imageViewAdd"
+                    android:id="@+id/imageViewFavorite"
                     android:layout_width="21dp"
                     android:layout_height="32dp"
-                    android:layout_marginTop="8dp"
                     android:layout_marginEnd="16dp"
+
+                    android:shadowColor="@color/black"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/imageViewSound"
-                    app:srcCompat="@drawable/add_pic" />
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:srcCompat="@drawable/ic_favorite" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
         </androidx.cardview.widget.CardView>
