@@ -11,6 +11,8 @@ interface WordDao {
     @Insert
     suspend fun insertAll(vararg words: Word): List<Long>
 
+    @Query("Insert into word (ing,tc,isFavorite,categoryId,id) VALUES (:ing,:tc,:isFavorite,:categoryid,:id) ")
+     fun insertFavorite(ing:String?,tc:String?,isFavorite:Boolean?,categoryid: Int?,id:Int?)
     @Query("SELECT * FROM word")
     suspend fun getAllWords(): List<Word>
     @Query("SELECT * FROM word WHERE categoryId=:categoryid")
