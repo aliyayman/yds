@@ -45,7 +45,7 @@ class CategoryFragment : Fragment() {
             val action = CategoryFragmentDirections.actionCategoryFragmentToTestragment(1)
             it.findNavController().navigate(action)
         }
-        binding.test2Button.setOnClickListener {
+        binding.matchButton.setOnClickListener {
             val action = CategoryFragmentDirections.actionCategoryFragmentToChooseFragment()
             it.findNavController().navigate(action)
         }
