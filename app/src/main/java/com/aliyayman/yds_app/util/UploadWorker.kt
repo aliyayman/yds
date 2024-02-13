@@ -43,15 +43,11 @@ class UploadWorker(val appContext: Context, workerParams: WorkerParameters) :
            db.collection("words_db")
                 .get()
                 .addOnSuccessListener {result->
-                    for (document in result){
-                     val word = document.toObject(NewWord::class.java)
-                        mList.add(word)
+                    for (document in result) {
+                        val newWord = document.toObject(NewWord::class.java)
+                        val word = Word(newWord.ing, newWord.tc, newWord.isFavorite, newWord.categoryId)
+                        wordList.add(word)
                     }
-                    for (word in mList){
-                        val new = Word(word.ing,word.tc,word.isFavorite,word.categoryId)
-                        wordList.add(new)
-                    }
-                    println("**" +wordList.size)
                     storeInRoom(wordList)
                 }
                 .addOnFailureListener { exception ->

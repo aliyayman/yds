@@ -1,11 +1,15 @@
 package com.aliyayman.yds_app.viewmodel
 
 import android.app.Application
+import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import com.aliyayman.yds_app.data.RemoteConfig
 import com.aliyayman.yds_app.model.Category
+import com.aliyayman.yds_app.model.CategoryFire
 import com.aliyayman.yds_app.service.myDatabase
 import com.aliyayman.yds_app.util.CustomSharedPreferences
+import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.launch
 import org.json.JSONArray
 
@@ -22,7 +26,8 @@ class CategoryViewModel(application: Application) : BaseViewModel(application) {
         if (updateTime != null && updateTime != 0L && System.nanoTime() - updateTime < refreshTime) {
             getDataFromRoom()
         } else {
-            getFromRemoteConfig()
+             getFromRemoteConfig()
+            // getFireStore()
         }
     }
 
@@ -52,6 +57,30 @@ class CategoryViewModel(application: Application) : BaseViewModel(application) {
         categories.value = list
         categoryError.value = false
         categoryLoading.value = false
+    }
+
+    private fun getFireStore(){
+        println("firebase category work")
+        val db = Firebase.firestore
+        launch {
+            db.collection("category")
+                .get()
+                .addOnSuccessListener {result->
+                    for (document in result) {
+                        println(document.data)
+                        val categoryFire = document.toObject(CategoryFire::class.java)
+                         if (categoryFire.categoryId != null) {
+                                val category = Category(categoryFire.categoryId,categoryFire.name)
+                                 categoryList.add(category)
+                            }
+                    }
+                    println("firecategory: $categoryList")
+                    storeInRoom(categoryList)
+                }
+                .addOnFailureListener { exception ->
+                    Log.w("TAG", "Error getting documents.", exception)
+                }
+        }
     }
 
     private fun getFromRemoteConfig() {
