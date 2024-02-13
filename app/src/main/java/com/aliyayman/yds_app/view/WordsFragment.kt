@@ -18,7 +18,7 @@ import java.util.Locale
 
 class WordsFragment : Fragment(), TextToSpeech.OnInitListener {
     private lateinit var binding: FragmentWordsBinding
-    private var wordAdapter = WordAdapter(arrayListOf())
+    private var wordAdapter = WordAdapter()
     private lateinit var viewModel: WordViewModel
     val args: WordsFragmentArgs by navArgs<WordsFragmentArgs>()
     private var categoryId = 0
@@ -49,6 +49,16 @@ class WordsFragment : Fragment(), TextToSpeech.OnInitListener {
             speakOut(word)
 
         }
+        wordAdapter.onItemFavClicked = { word ->
+            if (word.isFavorite == true!!) {
+                viewModel.removeFavorite(word)
+                viewModel.refreshWord(6)
+               viewModel.words.observe(viewLifecycleOwner, Observer {
+                   wordAdapter.differ.submitList(it)
+               })
+            } else
+                viewModel.addFavorite(word)
+        }
             binding.swipeRefreshLayout.setOnRefreshListener {
             binding.recyclerViewWord.visibility = View.GONE
             binding.errorWordTextview.visibility = View.GONE
@@ -65,7 +75,8 @@ class WordsFragment : Fragment(), TextToSpeech.OnInitListener {
         viewModel.words.observe(viewLifecycleOwner, Observer { words ->
             words?.let {
                 binding.recyclerViewWord.visibility = View.VISIBLE
-                wordAdapter.updateWordList(words)
+              //  wordAdapter.updateWordList(words)
+                wordAdapter.differ.submitList(words)
             }
         })
         viewModel.wordError.observe(viewLifecycleOwner, Observer { error ->

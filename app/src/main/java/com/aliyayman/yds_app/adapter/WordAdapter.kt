@@ -1,21 +1,38 @@
 package com.aliyayman.yds_app.adapter
 
+
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
+import androidx.recyclerview.widget.AsyncListDiffer
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.aliyayman.yds_app.R
 import com.aliyayman.yds_app.databinding.ItemWordBinding
 import com.aliyayman.yds_app.model.Word
 
+
 class WordAdapter(
-    val wordList: ArrayList<Word>,
     var onItemClicked: ((word: String) -> Unit)? = null,
+    var onItemFavClicked: ((word: Word) -> Unit)? = null,
 ) : RecyclerView.Adapter<WordAdapter.WordViewHolder>() {
 
     class WordViewHolder(val view: ItemWordBinding) : RecyclerView.ViewHolder(view.root) {
 
     }
+
+    private val diffCallback = object  : DiffUtil.ItemCallback<Word>(){
+        override fun areItemsTheSame(oldItem: Word, newItem: Word): Boolean {
+        return oldItem.id==newItem.id
+        }
+
+        override fun areContentsTheSame(oldItem: Word, newItem: Word): Boolean {
+            return oldItem==newItem
+        }
+
+    }
+    val differ = AsyncListDiffer(this,diffCallback)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): WordViewHolder {
         val inflater = LayoutInflater.from(parent.context)
@@ -25,26 +42,34 @@ class WordAdapter(
     }
 
     override fun getItemCount(): Int {
-        return wordList.size
+        return differ.currentList.size
     }
 
     override fun onBindViewHolder(holder: WordViewHolder, position: Int) {
-        holder.view.word = wordList[position]
+        holder.view.word = differ.currentList[position]
         holder.view.imageViewSound.setOnClickListener {
-            onItemClicked?.invoke(wordList[position].ing.toString())
-            println(wordList[position].ing + " clicked")
+            onItemClicked?.invoke(differ.currentList[position].ing.toString())
         }
-        holder.view.imageViewFavorite.setOnClickListener{
-                val word =wordList[position]
-
-              //  myDatabase(context).wordDao().insertFavorite(word.ing,word.tc,word.isFavorite,word.categoryId,word.id)
-
+        if (differ.currentList[position].isFavorite == true) {
+            holder.view.imageViewFavorite.visibility = View.GONE
+            holder.view.imageViewFavoriteFill.visibility = View.VISIBLE
+            holder.view.imageViewFavoriteFill.setOnClickListener {
+                onItemFavClicked?.invoke(differ.currentList[position])
             }
+        } else if (differ.currentList[position].isFavorite == false) {
+            holder.view.imageViewFavorite.setOnClickListener {
+                it.visibility = View.GONE
+                holder.view.imageViewFavoriteFill.visibility = View.VISIBLE
+                onItemFavClicked?.invoke(differ.currentList[position])
+            }
+
+        }
     }
 
-    fun updateWordList(newWordList: List<Word>) {
-        wordList.clear()
-        wordList.addAll(newWordList)
+
+        /*  fun updateWordList(newWordList: List<Word>) {
+        differ.currentList.clear()
+        differ.currentList.addAll(newWordList)
         notifyDataSetChanged()
+    }*/
     }
-}
