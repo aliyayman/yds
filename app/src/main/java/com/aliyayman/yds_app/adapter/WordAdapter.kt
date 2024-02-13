@@ -36,7 +36,7 @@ class WordAdapter(
         }
         holder.view.imageViewFavorite.setOnClickListener{
                 val word =wordList[position]
-                 println(word.tc.toString())
+
               //  myDatabase(context).wordDao().insertFavorite(word.ing,word.tc,word.isFavorite,word.categoryId,word.id)
 
             }

@@ -5,13 +5,13 @@ import android.util.Log
 import androidx.work.Worker
 import androidx.work.WorkerParameters
 import com.aliyayman.yds_app.data.RemoteConfig
+import com.aliyayman.yds_app.model.NewWord
 import com.aliyayman.yds_app.model.Word
 import com.aliyayman.yds_app.service.myDatabase
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import org.json.JSONArray
 import java.lang.Exception
@@ -23,11 +23,14 @@ class UploadWorker(val appContext: Context, workerParams: WorkerParameters) :
     private var wordList = ArrayList<Word>()
     private var rc = RemoteConfig()
     private val DATABASE_NAME = "allWords"
-    private var mList = ArrayList<Word>()
+    private var mList = ArrayList<NewWord>()
+
+
+
 
 
     override fun doWork(): Result {
-        getFromRemoteConfig(DATABASE_NAME)
+      //  getFromRemoteConfig(DATABASE_NAME)
         getDataFirebase()
         println("do work çalıştı")
         return Result.success()
@@ -41,16 +44,21 @@ class UploadWorker(val appContext: Context, workerParams: WorkerParameters) :
                 .get()
                 .addOnSuccessListener {result->
                     for (document in result){
-                    println(document.data)
-
+                     val word = document.toObject(NewWord::class.java)
+                        mList.add(word)
                     }
+                    for (word in mList){
+                        val new = Word(word.ing,word.tc,word.isFavorite,word.categoryId)
+                        wordList.add(new)
+                    }
+                    println("**" +wordList.size)
+                    storeInRoom(wordList)
                 }
                 .addOnFailureListener { exception ->
                     Log.w("TAG", "Error getting documents.", exception)
                 }
         }
     }
-
     private fun getFromRemoteConfig(name: String) {
         var remoteConfig = rc.getInitial()
         remoteConfig.fetchAndActivate().addOnCompleteListener {
@@ -109,8 +117,7 @@ class UploadWorker(val appContext: Context, workerParams: WorkerParameters) :
                 list[i].id = listLong[i].toInt()
                 i += 1
             }
-
-            println("kelimeler sqlite eklendi")
+            println("added words in room")
         }
     }
     override val coroutineContext: CoroutineContext

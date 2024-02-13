@@ -22,9 +22,7 @@ class WordViewModel(application: Application) : BaseViewModel(application) {
         launch {
             val sqlList = myDatabase(getApplication()).wordDao().getWordFromCategory(id)
             showWord(sqlList)
-            println("sqlden gelen wordssss:")
             mylist = sqlList as ArrayList<Word>
-            println(mylist.size)
 
         }
     }

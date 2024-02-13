@@ -38,7 +38,6 @@ class WordsFragment : Fragment(), TextToSpeech.OnInitListener {
 
         arguments?.let {
             categoryId = args.categoryId
-            println("ıd:$categoryId")
         }
         tts = TextToSpeech(requireContext(), this)
         viewModel = ViewModelProvider(this).get(WordViewModel::class.java)
