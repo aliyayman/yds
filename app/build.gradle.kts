@@ -93,5 +93,7 @@ dependencies {
 
     implementation("androidx.work:work-runtime-ktx:$work_version")
 
+    implementation ("com.airbnb.android:lottie:3.7.0")
+
 
 }
