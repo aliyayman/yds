@@ -10,6 +10,9 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.Navigation
 import com.aliyayman.yds_app.databinding.FragmentTestBinding
 import com.aliyayman.yds_app.viewmodel.TestViewModel
+import com.google.android.gms.ads.AdRequest
+import com.google.android.gms.ads.AdView
+import com.google.android.gms.ads.MobileAds
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -20,6 +23,7 @@ class TestFragment : Fragment(), CoroutineScope {
     private lateinit var binding: FragmentTestBinding
     private lateinit var viewModel: TestViewModel
     private val job = Job()
+    private lateinit var mAdView : AdView
 
 
     override fun onCreateView(
@@ -40,6 +44,12 @@ class TestFragment : Fragment(), CoroutineScope {
         binding.buttonB.setOnClickListener { checkAnswer(binding.buttonB, view) }
         binding.buttonC.setOnClickListener { checkAnswer(binding.buttonC, view) }
         binding.buttonD.setOnClickListener { checkAnswer(binding.buttonD, view) }
+
+        MobileAds.initialize(requireContext()) {}
+        mAdView = binding.adViewTest
+        val adRequest = AdRequest.Builder().build()
+        mAdView.loadAd(adRequest)
+
     }
 
     private fun writeQuestion() {

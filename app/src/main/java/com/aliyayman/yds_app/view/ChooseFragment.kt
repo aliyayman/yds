@@ -11,10 +11,14 @@ import com.aliyayman.yds_app.adapter.ChooseCardAdapter
 import com.aliyayman.yds_app.databinding.FragmentChooseBinding
 import com.aliyayman.yds_app.model.WordRecyler
 import com.aliyayman.yds_app.viewmodel.ChooseViewModel
+import com.google.android.gms.ads.AdView
+import com.google.android.gms.ads.MobileAds
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlin.coroutines.CoroutineContext
+import com.google.android.gms.ads.AdRequest
+
 
 
 class ChooseFragment : Fragment(), CoroutineScope {
@@ -27,6 +31,7 @@ class ChooseFragment : Fragment(), CoroutineScope {
     private lateinit var ingList: ArrayList<WordRecyler>
     private lateinit var randomTcList: ArrayList<WordRecyler>
     private var counter = 5
+    private lateinit var mAdView : AdView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -49,6 +54,10 @@ class ChooseFragment : Fragment(), CoroutineScope {
             getAndCheckWords()
 
         }
+        MobileAds.initialize(requireContext()) {}
+        mAdView = binding.adViewChoose
+        val adRequest = AdRequest.Builder().build()
+        mAdView.loadAd(adRequest)
     }
 
     private fun getAndCheckWords() {

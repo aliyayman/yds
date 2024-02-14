@@ -95,5 +95,7 @@ dependencies {
 
     implementation ("com.airbnb.android:lottie:3.7.0")
 
+    implementation ("com.google.android.gms:play-services-ads:22.6.0")
+
 
 }

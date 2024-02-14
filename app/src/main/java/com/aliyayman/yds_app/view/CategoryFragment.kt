@@ -12,12 +12,16 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.aliyayman.yds_app.adapter.CategoryAdapter
 import com.aliyayman.yds_app.databinding.FragmentCategoryBinding
 import com.aliyayman.yds_app.viewmodel.CategoryViewModel
+import com.google.android.gms.ads.AdView
+import com.google.android.gms.ads.AdRequest
+import com.google.android.gms.ads.MobileAds
 
 
 class CategoryFragment : Fragment() {
     private lateinit var binding: FragmentCategoryBinding
     private   var categoryAdapter = CategoryAdapter(arrayListOf())
     private  lateinit var  viewModel : CategoryViewModel
+    private lateinit var mAdView : AdView
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -51,6 +55,11 @@ class CategoryFragment : Fragment() {
         }
 
         observeLiveData()
+
+        MobileAds.initialize(requireContext()) {}
+        mAdView = binding.adViewCategory
+        val adRequest = AdRequest.Builder().build()
+        mAdView.loadAd(adRequest)
 
     }
 
