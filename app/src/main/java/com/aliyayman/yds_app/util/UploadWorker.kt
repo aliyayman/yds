@@ -26,12 +26,11 @@ class UploadWorker(val appContext: Context, workerParams: WorkerParameters) :
     private var mList = ArrayList<NewWord>()
 
 
-
-
-
     override fun doWork(): Result {
-      //  getFromRemoteConfig(DATABASE_NAME)
-        getDataFirebase()
+        launch {
+            // getFromRemoteConfig(DATABASE_NAME)
+            getDataFirebase()
+        }
         println("do work çalıştı")
         return Result.success()
     }
@@ -40,7 +39,7 @@ class UploadWorker(val appContext: Context, workerParams: WorkerParameters) :
         println("firebase work")
         val db = Firebase.firestore
         launch {
-           db.collection("words_db")
+           db.collection("words")
                 .get()
                 .addOnSuccessListener {result->
                     for (document in result) {
@@ -71,7 +70,7 @@ class UploadWorker(val appContext: Context, workerParams: WorkerParameters) :
 
 
                         val word = Word(ing, tc, isFavorite, categoryId)
-                      //  addFirebase(word)
+                        addFirebase(word)
                         wordList.add(word)
                     }
                     println("remoteconfigden gelen word:")
@@ -95,7 +94,7 @@ class UploadWorker(val appContext: Context, workerParams: WorkerParameters) :
             "categoryId" to getword.categoryId
         )
 
-        db.collection("words_db")
+        db.collection("words")
             .add(word)
             .addOnSuccessListener { documentReference ->
                 Log.d("TAG", "DocumentSnapshot added with ID: ${documentReference.id}")
