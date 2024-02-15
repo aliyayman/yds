@@ -54,10 +54,14 @@ class WordAdapter(
             holder.view.imageViewFavorite.visibility = View.GONE
             holder.view.imageViewFavoriteFill.visibility = View.VISIBLE
             holder.view.imageViewFavoriteFill.setOnClickListener {
+                holder.view.imageViewFavorite.visibility = View.VISIBLE
+                holder.view.imageViewFavoriteFill.visibility = View.GONE
+                println(differ.currentList[position])
                 onItemFavClicked?.invoke(differ.currentList[position])
             }
         } else if (differ.currentList[position].isFavorite == false) {
             holder.view.imageViewFavorite.setOnClickListener {
+                println(differ.currentList[position])
                 it.visibility = View.GONE
                 holder.view.imageViewFavoriteFill.visibility = View.VISIBLE
                 onItemFavClicked?.invoke(differ.currentList[position])

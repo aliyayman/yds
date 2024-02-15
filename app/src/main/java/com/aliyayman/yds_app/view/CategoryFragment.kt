@@ -54,6 +54,11 @@ class CategoryFragment : Fragment() {
             it.findNavController().navigate(action)
         }
 
+        binding.favoritesButton.setOnClickListener {
+            val action = CategoryFragmentDirections.actionCategoryFragmentToFavoritesFragment()
+            it.findNavController().navigate(action)
+        }
+
         observeLiveData()
 
         MobileAds.initialize(requireContext()) {}

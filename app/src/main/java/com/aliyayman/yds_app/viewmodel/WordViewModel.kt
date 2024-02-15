@@ -18,11 +18,18 @@ class WordViewModel(application: Application) : BaseViewModel(application) {
         getFromRoom(id)
     }
 
+    fun refreshFavoriteWord() {
+        launch {
+            val roomList = myDatabase(getApplication()).wordDao().getFavoritesWord()
+            showWord(roomList)
+
+        }
+    }
+
     fun addFavorite(word: Word) {
         viewModelScope.launch(Dispatchers.IO) {
             if (word !== null) {
                 myDatabase(getApplication()).wordDao().updateFavorite(true,word.id)
-                myDatabase(getApplication()).wordDao().insertFavorite(word.ing, word.tc, true, 6)
             }
         }
     }
@@ -31,19 +38,15 @@ class WordViewModel(application: Application) : BaseViewModel(application) {
         viewModelScope.launch(Dispatchers.IO) {
             if (word.id !== null) {
                 myDatabase(getApplication()).wordDao().updateFavorite(false,word.id)
-                myDatabase(getApplication()).wordDao().deletewWordFavorites(word.id, 6)
             }
         }
     }
 
     private fun getFromRoom(id: Int) {
         wordLoading.value = true
-        var mylist = ArrayList<Word>()
         launch {
-            val sqlList = myDatabase(getApplication()).wordDao().getWordFromCategory(id)
-            showWord(sqlList)
-            mylist = sqlList as ArrayList<Word>
-
+            val roomList = myDatabase(getApplication()).wordDao().getWordFromCategory(id)
+            showWord(roomList)
         }
     }
     private fun showWord(wordlist: List<Word>) {

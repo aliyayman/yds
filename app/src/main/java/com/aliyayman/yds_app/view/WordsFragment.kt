@@ -52,7 +52,7 @@ class WordsFragment : Fragment(), TextToSpeech.OnInitListener {
         wordAdapter.onItemFavClicked = { word ->
             if (word.isFavorite == true!!) {
                 viewModel.removeFavorite(word)
-                viewModel.refreshWord(6)
+                viewModel.refreshWord(categoryId)
                viewModel.words.observe(viewLifecycleOwner, Observer {
                    wordAdapter.differ.submitList(it)
                })

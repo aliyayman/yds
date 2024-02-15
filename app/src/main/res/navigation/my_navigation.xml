@@ -19,6 +19,9 @@
         <action
             android:id="@+id/action_categoryFragment_to_chooseFragment"
             app:destination="@id/chooseFragment" />
+        <action
+            android:id="@+id/action_categoryFragment_to_favoritesFragment"
+            app:destination="@id/favoritesFragment" />
     </fragment>
     <fragment
         android:id="@+id/wordsFragment"
@@ -76,4 +79,9 @@
             app:popUpTo="@id/categoryFragment"
             app:popUpToInclusive="true" />
     </fragment>
+    <fragment
+        android:id="@+id/favoritesFragment"
+        android:name="com.aliyayman.yds_app.view.FavoritesFragment"
+        android:label="fragment_favorites"
+        tools:layout="@layout/fragment_favorites" />
 </navigation>
