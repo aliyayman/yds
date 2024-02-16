@@ -54,6 +54,7 @@ class ChooseFragment : Fragment(), CoroutineScope {
             getAndCheckWords()
 
         }
+        //ca-app-pub-5875015425896746/9884288321
         MobileAds.initialize(requireContext()) {}
         mAdView = binding.adViewChoose
         val adRequest = AdRequest.Builder().build()

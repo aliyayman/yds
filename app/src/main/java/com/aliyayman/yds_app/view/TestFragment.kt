@@ -45,6 +45,8 @@ class TestFragment : Fragment(), CoroutineScope {
         binding.buttonC.setOnClickListener { checkAnswer(binding.buttonC, view) }
         binding.buttonD.setOnClickListener { checkAnswer(binding.buttonD, view) }
 
+
+        //ca-app-pub-5875015425896746/2911685865
         MobileAds.initialize(requireContext()) {}
         mAdView = binding.adViewTest
         val adRequest = AdRequest.Builder().build()
