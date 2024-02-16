@@ -10,9 +10,6 @@ import com.aliyayman.yds_app.model.Word
 interface WordDao {
     @Insert
     suspend fun insertAll(vararg words: Word): List<Long>
-
-    /*@Query("INSERT INTO word (ing,tc,isFavorite,categoryId) VALUES (:ing,:tc,:isFavorite,:categoryid) ")
-    suspend fun insertFavorite(ing:String?,tc:String?,isFavorite:Boolean,categoryid: Int?)*/
     @Query("SELECT * FROM word WHERE isFavorite=true")
     suspend fun getFavoritesWord(): List<Word>
     @Query("UPDATE  word  SET  isFavorite= :isFavorite  Where id =:id ")
