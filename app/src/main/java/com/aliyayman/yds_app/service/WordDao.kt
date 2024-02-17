@@ -3,12 +3,14 @@ package com.aliyayman.yds_app.service
 import androidx.room.Dao
 import androidx.room.Delete
 import androidx.room.Insert
+import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import com.aliyayman.yds_app.model.Word
 
 @Dao
 interface WordDao {
-    @Insert
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertAll(vararg words: Word): List<Long>
     @Query("SELECT * FROM word WHERE isFavorite=true")
     suspend fun getFavoritesWord(): List<Word>

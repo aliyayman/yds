@@ -5,13 +5,10 @@
     xmlns:tools="http://schemas.android.com/tools">
 
 
-<androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".view.CategoryFragment">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
+        android:background="@drawable/background"
         android:layout_height="match_parent">
 
 
@@ -32,12 +29,14 @@
             android:id="@+id/favoritesButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="10dp"
             android:text="favorites"
             app:layout_constraintBottom_toBottomOf="@+id/adViewCategory"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.488"
-            app:layout_constraintTop_toTopOf="@+id/recyclerViewCategory">></Button>
+            app:layout_constraintTop_toTopOf="@+id/recyclerViewCategory"></Button>
 
         <TextView
             android:id="@+id/errorTextview"
@@ -61,9 +60,9 @@
 
         <Button
             android:id="@+id/testButton"
-            android:layout_width="wrap_content"
+            android:layout_width="150dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="50dp"
+            android:layout_marginStart="20dp"
             android:layout_marginBottom="100dp"
             android:text="do test"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -71,9 +70,9 @@
 
         <Button
             android:id="@+id/matchButton"
-            android:layout_width="wrap_content"
+            android:layout_width="150dp"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="50dp"
+            android:layout_marginEnd="20dp"
             android:layout_marginBottom="100dp"
             android:text="match words"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -97,5 +96,4 @@
             app:layout_constraintStart_toStartOf="parent"></com.google.android.gms.ads.AdView>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
-</androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 </layout>

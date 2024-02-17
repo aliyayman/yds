@@ -46,25 +46,17 @@ class FavoritesFragment : Fragment() {
         }
 
         wordAdapter.onItemFavClicked = { word ->
-            if (word.isFavorite == true!!) {
+            if (word.isFavorite == true) {
                 viewModel.removeFavorite(word)
-                viewModel.refreshFavoriteWord()
-                viewModel.words.observe(viewLifecycleOwner, Observer {
-                    wordAdapter.differ.submitList(it)
-                    println("***" + wordAdapter.differ.currentList)
-                })
             } else
                 viewModel.addFavorite(word)
         }
-
         observeLiveData()
     }
-
     private fun observeLiveData() {
         viewModel.words.observe(viewLifecycleOwner, Observer { words ->
             words?.let {
                 binding.recyclerViewWordFav.visibility = View.VISIBLE
-                //  wordAdapter.updateWordList(words)
                 wordAdapter.differ.submitList(words)
             }
         })
@@ -90,5 +82,4 @@ class FavoritesFragment : Fragment() {
             }
         })
     }
-
 }
