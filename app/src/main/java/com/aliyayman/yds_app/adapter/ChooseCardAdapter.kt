@@ -1,14 +1,10 @@
 package com.aliyayman.yds_app.adapter
 
-import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.graphics.red
-import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.aliyayman.yds_app.databinding.ChooseCardItemBinding
-import com.aliyayman.yds_app.model.Word
 import com.aliyayman.yds_app.model.WordRecyler
 
 class ChooseCardAdapter(
@@ -57,18 +53,5 @@ class ChooseCardAdapter(
             }
         }
     }
-
-/*    open class WordDiffUtil(
-        private val oldList: ArrayList<Word>, private val newList: ArrayList<Word>
-    ) : DiffUtil.Callback() {
-
-        override fun getOldListSize() = oldList.size
-        override fun getNewListSize() = newList.size
-        override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean =
-            oldList[oldItemPosition].id == newList[newItemPosition].id
-
-        override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean =
-            oldList[oldItemPosition].id == newList[newItemPosition].id
-    }*/
 }
 

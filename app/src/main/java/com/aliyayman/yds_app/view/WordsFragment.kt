@@ -45,12 +45,10 @@ class WordsFragment : Fragment(), TextToSpeech.OnInitListener {
         binding.recyclerViewWord.layoutManager = LinearLayoutManager(context)
         binding.recyclerViewWord.adapter = wordAdapter
         wordAdapter.onItemClicked = { word ->
-
             speakOut(word)
-
         }
         wordAdapter.onItemFavClicked = { word ->
-            if (word.isFavorite == true!!) {
+            if (word.isFavorite == true) {
                 viewModel.removeFavorite(word)
                 viewModel.refreshWord(categoryId)
                viewModel.words.observe(viewLifecycleOwner, Observer {
@@ -75,7 +73,6 @@ class WordsFragment : Fragment(), TextToSpeech.OnInitListener {
         viewModel.words.observe(viewLifecycleOwner, Observer { words ->
             words?.let {
                 binding.recyclerViewWord.visibility = View.VISIBLE
-              //  wordAdapter.updateWordList(words)
                 wordAdapter.differ.submitList(words)
             }
         })
@@ -104,7 +101,6 @@ class WordsFragment : Fragment(), TextToSpeech.OnInitListener {
     override fun onInit(status: Int) {
         if (status == TextToSpeech.SUCCESS) {
             val result = tts!!.setLanguage(Locale.US)
-
             if (result == TextToSpeech.LANG_MISSING_DATA || result == TextToSpeech.LANG_NOT_SUPPORTED) {
                 Log.e("TTS", "The Language not supported!")
             } else {

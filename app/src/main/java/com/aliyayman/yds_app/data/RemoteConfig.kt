@@ -37,13 +37,5 @@ class RemoteConfig {
                     firebaseRemoteConfig.fetchAndActivate()
                 }
             }
-
-
-
-
     }
-
-
-
-
 }

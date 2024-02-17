@@ -20,14 +20,10 @@ class CategoryAdapter(val categoryList: ArrayList<Category>): RecyclerView.Adapt
         val inflater = LayoutInflater.from(parent.context)
         val view = inflater.inflate(R.layout.item_category,parent,false)
         return CategoryViewHolder(view)
-
-
-
     }
 
     override fun getItemCount(): Int {
        return categoryList.size
-
     }
 
     override fun onBindViewHolder(holder: CategoryViewHolder, position: Int) {
@@ -36,13 +32,11 @@ class CategoryAdapter(val categoryList: ArrayList<Category>): RecyclerView.Adapt
             val action = CategoryFragmentDirections.actionCategoryFragmentToWordsFragment(categoryList[position].categoryId)
             it.findNavController().navigate(action)
         }
-
     }
 
     fun updateCategoryList(newCategoryList: List<Category>){
         categoryList.clear()
         categoryList.addAll(newCategoryList)
         notifyDataSetChanged()
-
     }
 }

@@ -22,17 +22,17 @@ class WordAdapter(
 
     }
 
-    private val diffCallback = object  : DiffUtil.ItemCallback<Word>(){
+    private val diffCallback = object : DiffUtil.ItemCallback<Word>() {
         override fun areItemsTheSame(oldItem: Word, newItem: Word): Boolean {
-        return oldItem.id==newItem.id
+            return oldItem.id == newItem.id
         }
 
         override fun areContentsTheSame(oldItem: Word, newItem: Word): Boolean {
-            return oldItem==newItem
+            return oldItem == newItem
         }
 
     }
-    val differ = AsyncListDiffer(this,diffCallback)
+    val differ = AsyncListDiffer(this, diffCallback)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): WordViewHolder {
         val inflater = LayoutInflater.from(parent.context)
@@ -69,11 +69,4 @@ class WordAdapter(
 
         }
     }
-
-
-        /*  fun updateWordList(newWordList: List<Word>) {
-        differ.currentList.clear()
-        differ.currentList.addAll(newWordList)
-        notifyDataSetChanged()
-    }*/
-    }
+}

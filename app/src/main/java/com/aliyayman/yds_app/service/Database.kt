@@ -21,13 +21,10 @@ abstract class myDatabase : RoomDatabase() {
             instance ?: makeDatabase(context).also {
                 instance = it
             }
-
         }
 
         private fun makeDatabase(context: Context) = Room.databaseBuilder(
             context.applicationContext,myDatabase::class.java,"mydatabase")
             .build()
-
-
     }
 }

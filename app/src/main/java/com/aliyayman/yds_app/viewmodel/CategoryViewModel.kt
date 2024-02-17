@@ -26,7 +26,7 @@ class CategoryViewModel(application: Application) : BaseViewModel(application) {
         if (updateTime != null && updateTime != 0L && System.nanoTime() - updateTime < refreshTime) {
             getDataFromRoom()
         } else {
-             getFromRemoteConfig()
+            getFromRemoteConfig()
             // getFireStore()
         }
     }
@@ -59,20 +59,20 @@ class CategoryViewModel(application: Application) : BaseViewModel(application) {
         categoryLoading.value = false
     }
 
-    private fun getFireStore(){
+    private fun getFireStore() {
         println("firebase category work")
         val db = Firebase.firestore
         launch {
             db.collection("category")
                 .get()
-                .addOnSuccessListener {result->
+                .addOnSuccessListener { result ->
                     for (document in result) {
                         println(document.data)
                         val categoryFire = document.toObject(CategoryFire::class.java)
-                         if (categoryFire.categoryId != null) {
-                                val category = Category(categoryFire.categoryId,categoryFire.name)
-                                 categoryList.add(category)
-                            }
+                        if (categoryFire.categoryId != null) {
+                            val category = Category(categoryFire.categoryId, categoryFire.name)
+                            categoryList.add(category)
+                        }
                     }
                     println("firecategory: $categoryList")
                     storeInRoom(categoryList)

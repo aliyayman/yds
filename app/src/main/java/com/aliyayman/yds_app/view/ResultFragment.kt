@@ -57,6 +57,4 @@ class ResultFragment : Fragment() {
             }
         }
     }
-
-
 }

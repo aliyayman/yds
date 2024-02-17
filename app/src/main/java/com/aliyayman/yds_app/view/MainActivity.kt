@@ -3,7 +3,6 @@ package com.aliyayman.yds_app.view
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.aliyayman.yds_app.R
-import com.google.android.gms.ads.MobileAds
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {

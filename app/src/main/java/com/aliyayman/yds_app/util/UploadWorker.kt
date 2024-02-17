@@ -23,7 +23,6 @@ class UploadWorker(val appContext: Context, workerParams: WorkerParameters) :
     private var wordList = ArrayList<Word>()
     private var rc = RemoteConfig()
     private val DATABASE_NAME = "allWords"
-    private var mList = ArrayList<NewWord>()
 
 
     override fun doWork(): Result {
@@ -35,16 +34,17 @@ class UploadWorker(val appContext: Context, workerParams: WorkerParameters) :
         return Result.success()
     }
 
-    private fun getDataFirebase(){
+    private fun getDataFirebase() {
         println("firebase work")
         val db = Firebase.firestore
         launch {
-           db.collection("words")
+            db.collection("words")
                 .get()
-                .addOnSuccessListener {result->
+                .addOnSuccessListener { result ->
                     for (document in result) {
                         val newWord = document.toObject(NewWord::class.java)
-                        val word = Word(newWord.ing, newWord.tc, newWord.isFavorite, newWord.categoryId)
+                        val word =
+                            Word(newWord.ing, newWord.tc, newWord.isFavorite, newWord.categoryId)
                         wordList.add(word)
                     }
                     storeInRoom(wordList)
@@ -54,6 +54,7 @@ class UploadWorker(val appContext: Context, workerParams: WorkerParameters) :
                 }
         }
     }
+
     private fun getFromRemoteConfig(name: String) {
         var remoteConfig = rc.getInitial()
         remoteConfig.fetchAndActivate().addOnCompleteListener {
@@ -85,7 +86,8 @@ class UploadWorker(val appContext: Context, workerParams: WorkerParameters) :
             }
         }
     }
-    private fun addFirebase(getword: Word){
+
+    private fun addFirebase(getword: Word) {
         val db = Firebase.firestore
         val word = hashMapOf(
             "ing" to getword.ing,
@@ -103,6 +105,7 @@ class UploadWorker(val appContext: Context, workerParams: WorkerParameters) :
                 Log.w("TAG", "Error adding document", e)
             }
     }
+
     private fun storeInRoom(list: List<Word>) {
         launch {
             val dao = myDatabase(appContext).wordDao()
@@ -115,8 +118,9 @@ class UploadWorker(val appContext: Context, workerParams: WorkerParameters) :
             println("added words in room")
         }
     }
+
     override val coroutineContext: CoroutineContext
-        get() =  Dispatchers.IO
+        get() = Dispatchers.IO
 
 }
 
