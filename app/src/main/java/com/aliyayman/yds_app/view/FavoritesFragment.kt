@@ -47,7 +47,7 @@ class FavoritesFragment : Fragment() {
 
         wordAdapter.onItemFavClicked = { word ->
             if (word.isFavorite == true) {
-                viewModel.removeFavorite(word)
+                viewModel.removeAndGetFavorite(word)
             } else
                 viewModel.addFavorite(word)
         }

@@ -14,9 +14,12 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.aliyayman.yds_app.adapter.WordAdapter
 import com.aliyayman.yds_app.databinding.FragmentWordsBinding
 import com.aliyayman.yds_app.viewmodel.WordViewModel
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import java.util.Locale
+import kotlin.coroutines.CoroutineContext
 
-class WordsFragment : Fragment(), TextToSpeech.OnInitListener {
+class WordsFragment : Fragment(), TextToSpeech.OnInitListener, CoroutineScope {
     private lateinit var binding: FragmentWordsBinding
     private var wordAdapter = WordAdapter()
     private lateinit var viewModel: WordViewModel
@@ -49,6 +52,7 @@ class WordsFragment : Fragment(), TextToSpeech.OnInitListener {
         }
         wordAdapter.onItemFavClicked = { word ->
             if (word.isFavorite == true) {
+
                 viewModel.removeFavorite(word)
                 viewModel.refreshWord(categoryId)
                viewModel.words.observe(viewLifecycleOwner, Observer {
@@ -108,4 +112,7 @@ class WordsFragment : Fragment(), TextToSpeech.OnInitListener {
             }
         }
     }
+
+    override val coroutineContext: CoroutineContext
+        get() = Dispatchers.Main
 }

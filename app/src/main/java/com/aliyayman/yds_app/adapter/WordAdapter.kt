@@ -44,7 +44,6 @@ class WordAdapter(
     override fun getItemCount(): Int {
         return differ.currentList.size
     }
-
     override fun onBindViewHolder(holder: WordViewHolder, position: Int) {
         holder.view.word = differ.currentList[position]
         holder.view.imageViewSound.setOnClickListener {
@@ -64,6 +63,11 @@ class WordAdapter(
                 println(differ.currentList[position])
                 it.visibility = View.GONE
                 holder.view.imageViewFavoriteFill.visibility = View.VISIBLE
+                onItemFavClicked?.invoke(differ.currentList[position])
+            }
+            holder.view.imageViewFavoriteFill.setOnClickListener {
+                it.visibility = View.GONE
+                holder.view.imageViewFavorite.visibility = View.VISIBLE
                 onItemFavClicked?.invoke(differ.currentList[position])
             }
 

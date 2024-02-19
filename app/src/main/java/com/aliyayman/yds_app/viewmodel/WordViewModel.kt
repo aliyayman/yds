@@ -32,6 +32,11 @@ class WordViewModel(application: Application) : BaseViewModel(application) {
     }
 
     fun removeFavorite(word: Word) {
+        viewModelScope.launch(Dispatchers.Main) {
+            myDatabase(getApplication()).wordDao().updateFavorite(false, word.id)
+        }
+    }
+    fun removeAndGetFavorite(word: Word) {
         viewModelScope.launch(Dispatchers.IO) {
             myDatabase(getApplication()).wordDao().updateFavorite(false, word.id)
             words.postValue(myDatabase(getApplication()).wordDao().getFavoritesWord())
