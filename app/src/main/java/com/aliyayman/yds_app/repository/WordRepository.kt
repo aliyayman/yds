@@ -1,11 +1,11 @@
 package com.aliyayman.yds_app.repository
 
-import androidx.room.Delete
-import androidx.room.Query
+
 import com.aliyayman.yds_app.model.Word
 import com.aliyayman.yds_app.service.myDatabase
+import javax.inject.Inject
 
-class WordRepository(
+class WordRepository @Inject constructor(
     val db : myDatabase
 ) {
     suspend fun insertAll(word: Word) = db.wordDao().insertAll(word)

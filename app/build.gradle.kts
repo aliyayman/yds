@@ -4,6 +4,8 @@ plugins {
     id("androidx.navigation.safeargs.kotlin")
     id ("kotlin-kapt")
     id("com.google.gms.google-services")
+    kotlin("kapt")
+    id("com.google.dagger.hilt.android")
 }
 
 android {
@@ -96,6 +98,14 @@ dependencies {
     implementation ("com.airbnb.android:lottie:3.7.0")
 
     implementation ("com.google.android.gms:play-services-ads:22.6.0")
+
+    //Dagger - Hilt
+    implementation ("com.google.dagger:hilt-android:2.50")
+    kapt("com.google.dagger:hilt-android-compiler:2.50")
+    kapt ("androidx.hilt:hilt-compiler:1.1.0")
+    implementation ("androidx.hilt:hilt-navigation-compose:1.1.0")
+    implementation ("androidx.hilt:hilt-work:1.1.0")
+    implementation ("androidx.work:work-runtime-ktx:2.9.0")
 
 
 }
