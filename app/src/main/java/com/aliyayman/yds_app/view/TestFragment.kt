@@ -13,12 +13,14 @@ import com.aliyayman.yds_app.viewmodel.TestViewModel
 import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.AdView
 import com.google.android.gms.ads.MobileAds
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import kotlin.coroutines.CoroutineContext
 
+@AndroidEntryPoint
 class TestFragment : Fragment(), CoroutineScope {
     private lateinit var binding: FragmentTestBinding
     private lateinit var viewModel: TestViewModel

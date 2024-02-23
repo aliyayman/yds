@@ -15,8 +15,10 @@ import com.aliyayman.yds_app.viewmodel.CategoryViewModel
 import com.google.android.gms.ads.AdView
 import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.MobileAds
+import dagger.hilt.android.AndroidEntryPoint
 
 
+@AndroidEntryPoint
 class CategoryFragment : Fragment() {
     private lateinit var binding: FragmentCategoryBinding
     private   var categoryAdapter = CategoryAdapter(arrayListOf())

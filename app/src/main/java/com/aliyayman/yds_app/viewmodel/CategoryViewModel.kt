@@ -6,14 +6,22 @@ import androidx.lifecycle.MutableLiveData
 import com.aliyayman.yds_app.data.RemoteConfig
 import com.aliyayman.yds_app.model.Category
 import com.aliyayman.yds_app.model.CategoryFire
+import com.aliyayman.yds_app.repository.CategoryRepository
+import com.aliyayman.yds_app.repository.WordRepository
 import com.aliyayman.yds_app.service.myDatabase
 import com.aliyayman.yds_app.util.CustomSharedPreferences
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import org.json.JSONArray
+import javax.inject.Inject
 
-class CategoryViewModel(application: Application) : BaseViewModel(application) {
+@HiltViewModel
+class CategoryViewModel @Inject constructor(
+    application: Application,
+    private val repository: CategoryRepository
+    ) : BaseViewModel(application) {
     val categories = MutableLiveData<List<Category>>()
     val categoryError = MutableLiveData<Boolean>()
     val categoryLoading = MutableLiveData<Boolean>()
@@ -33,7 +41,7 @@ class CategoryViewModel(application: Application) : BaseViewModel(application) {
 
     private fun getDataFromRoom() {
         launch {
-            val categories = myDatabase(getApplication()).categoryDao().getAllCategories()
+            val categories = repository.getAllCategories()
             showData(categories)
         }
     }

@@ -18,9 +18,10 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlin.coroutines.CoroutineContext
 import com.google.android.gms.ads.AdRequest
+import dagger.hilt.android.AndroidEntryPoint
 
 
-
+@AndroidEntryPoint
 class ChooseFragment : Fragment(), CoroutineScope {
     private lateinit var binding: FragmentChooseBinding
     private lateinit var viewModel: ChooseViewModel

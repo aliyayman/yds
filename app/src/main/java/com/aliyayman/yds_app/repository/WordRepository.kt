@@ -8,7 +8,7 @@ import javax.inject.Inject
 class WordRepository @Inject constructor(
     private val wordDao: WordDao
 ) {
-    suspend fun insertAll(word: Word) = wordDao.insertAll(word)
+    suspend fun insertAll(vararg words: Word) :List<Long> = wordDao.insertAll(*words)
     suspend fun getFavoritesWord() = wordDao.getFavoritesWord()
     suspend fun updateFavorite(isFavorite: Boolean,id:Int) = wordDao.updateFavorite(isFavorite,id)
     suspend fun getWordFromCategory(categoryid: Int) = wordDao.getWordFromCategory(categoryid)
