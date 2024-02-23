@@ -14,11 +14,12 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.aliyayman.yds_app.adapter.WordAdapter
 import com.aliyayman.yds_app.databinding.FragmentWordsBinding
 import com.aliyayman.yds_app.viewmodel.WordViewModel
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import java.util.Locale
 import kotlin.coroutines.CoroutineContext
-
+@AndroidEntryPoint
 class WordsFragment : Fragment(), TextToSpeech.OnInitListener, CoroutineScope {
     private lateinit var binding: FragmentWordsBinding
     private var wordAdapter = WordAdapter()

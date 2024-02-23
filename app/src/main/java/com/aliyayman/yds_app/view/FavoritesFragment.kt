@@ -11,7 +11,9 @@ import androidx.lifecycle.Observer
 import com.aliyayman.yds_app.adapter.WordAdapter
 import com.aliyayman.yds_app.databinding.FragmentFavoritesBinding
 import com.aliyayman.yds_app.viewmodel.WordViewModel
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class FavoritesFragment : Fragment() {
     private lateinit var binding: FragmentFavoritesBinding
     private var wordAdapter = WordAdapter()
