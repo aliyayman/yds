@@ -2,6 +2,7 @@ package com.aliyayman.yds_app.adapter
 
 
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.AsyncListDiffer
@@ -15,6 +16,7 @@ import com.aliyayman.yds_app.model.Word
 class WordAdapter(
     var onItemClicked: ((word: String) -> Unit)? = null,
     var onItemFavClicked: ((word: Word) -> Unit)? = null,
+    var isFavorite : Boolean
 ) : RecyclerView.Adapter<WordAdapter.WordViewHolder>() {
 
     class WordViewHolder(val view: ItemWordBinding) : RecyclerView.ViewHolder(view.root) {
@@ -48,17 +50,22 @@ class WordAdapter(
         holder.view.imageViewSound.setOnClickListener {
             onItemClicked?.invoke(differ.currentList[position].ing.toString())
         }
-        if (differ.currentList[position].isFavorite == true) {
-            holder.view.imgIsFavorite.setImageResource(R.drawable.ic_fill_favorite)
 
-        } else if (differ.currentList[position].isFavorite == false) {
-            holder.view.imgIsFavorite.setImageResource(R.drawable.ic_favorite)
+        if (!isFavorite){
+            if (differ.currentList[position].isFavorite == true) {
+                holder.view.imgIsFavorite.setImageResource(R.drawable.ic_fill_favorite)
+
+            } else if (differ.currentList[position].isFavorite == false) {
+                holder.view.imgIsFavorite.setImageResource(R.drawable.ic_favorite)
+            }
+
+            holder.view.imgIsFavorite.setOnClickListener{
+                println(differ.currentList[position] )
+                println(differ.currentList[position].id)
+                onItemFavClicked?.invoke(differ.currentList[position])
+            }
+        }else{
+            holder.view.imgIsFavorite.visibility= View.GONE
         }
-
-        holder.view.imgIsFavorite.setOnClickListener{
-        println(differ.currentList[position] )
-        println(differ.currentList[position].id)
-        onItemFavClicked?.invoke(differ.currentList[position])
-    }
     }
 }

@@ -22,7 +22,7 @@ import kotlin.coroutines.CoroutineContext
 @AndroidEntryPoint
 class WordsFragment : Fragment(), TextToSpeech.OnInitListener, CoroutineScope {
     private lateinit var binding: FragmentWordsBinding
-    private var wordAdapter = WordAdapter()
+    private var wordAdapter = WordAdapter(isFavorite = false)
     private lateinit var viewModel: WordViewModel
     val args: WordsFragmentArgs by navArgs<WordsFragmentArgs>()
     private var categoryId = 0

@@ -22,7 +22,7 @@ import java.util.Locale
 @AndroidEntryPoint
 class FavoritesFragment : Fragment(), TextToSpeech.OnInitListener {
     private lateinit var binding: FragmentFavoritesBinding
-    private var wordAdapter = WordAdapter()
+    private var wordAdapter = WordAdapter(isFavorite = true)
     private lateinit var viewModel: WordViewModel
     private lateinit var tts: TextToSpeech
 
@@ -55,14 +55,7 @@ class FavoritesFragment : Fragment(), TextToSpeech.OnInitListener {
           observeLiveData()
         }
         observeLiveData()
-
-      /*  wordAdapter.onItemFavClicked = { word ->
-            if (word.isFavorite == true) {
-                viewModel.removeFavorite(word)
-            }
-        }*/
         observeRefresh()
-
 
         wordAdapter.onItemClicked ={word ->
             speakOut(word)

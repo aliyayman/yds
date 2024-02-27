@@ -20,6 +20,8 @@ import java.util.concurrent.TimeUnit
 
 class SplashFragment : Fragment() {
     private lateinit var binding: FragmentSplashBinding
+    private val firebaseRemoteConfig = FirebaseRemoteConfig.getInstance()
+    private var isUpdate  = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -43,45 +45,47 @@ class SplashFragment : Fragment() {
         WorkManager.getInstance(view.context)
             .enqueue(uploadWorkRequest)
 
-        checkUpdate()
-
-
-
-
-        object : CountDownTimer(3000, 1000) {
-            override fun onTick(millisUntilFinished: Long) {
-
-            }
-
-            override fun onFinish() {
-
-                val action = SplashFragmentDirections.actionSplashFragmentToCategoryFragment()
-                val  navController = Navigation.findNavController(view)
-                navController.popBackStack(R.id.categoryFragment,false)
-                navController.navigate(action)
-
-            }
-        }.start()
+           checkUpdate()
     }
 
-    private fun checkUpdate() {
-      val firebaseRemoteConfig = FirebaseRemoteConfig.getInstance()
+    private fun checkVersion(){
+        if (isUpdate){
+
+        }else{
+            object : CountDownTimer(3000, 1000) {
+                override fun onTick(millisUntilFinished: Long) {
+
+                }
+                override fun onFinish() {
+
+                    val action = SplashFragmentDirections.actionSplashFragmentToCategoryFragment()
+                    val  navController = view?.let { Navigation.findNavController(it) }
+                    navController?.popBackStack(R.id.categoryFragment,false)
+                    navController?.navigate(action)
+
+                }
+            }.start()
+        }
+    }
+
+    private fun checkUpdate()  {
         firebaseRemoteConfig.setDefaultsAsync(R.xml.firebase_remote_config)
-        firebaseRemoteConfig.fetchAndActivate()
-            .addOnCompleteListener {
+        firebaseRemoteConfig.fetchAndActivate().addOnCompleteListener {
                 if (it.isSuccessful){
                     val lastVersion = firebaseRemoteConfig.getDouble("last_version")
-                    println("last version:"+ lastVersion.toString())
+                    println("last version:$lastVersion")
                     val currentVersion = requireActivity().packageManager.getPackageInfo(requireActivity().packageName,0).versionName.toDouble()
-                    println("current:"+ currentVersion.toString())
-                    if(currentVersion<lastVersion){
+                    println("current:$currentVersion")
+                    if(currentVersion < lastVersion){
+                        isUpdate = true
                         binding.updateButton.visibility = View.VISIBLE
                         binding.updateButton.setOnClickListener {
-                            val intent =Intent(Intent.ACTION_VIEW)
+                            val intent = Intent(Intent.ACTION_VIEW)
                             intent.data = Uri.parse(PLAY_STORE_URL)
                             startActivity(intent)
                         }
                     }
+                    checkVersion()
                 }
             }
     }
