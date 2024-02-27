@@ -5,9 +5,8 @@ import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import com.aliyayman.yds_app.data.RemoteConfig
 import com.aliyayman.yds_app.model.Category
-import com.aliyayman.yds_app.model.CategoryFire
+import com.aliyayman.yds_app.model.FirebaseCategory
 import com.aliyayman.yds_app.repository.CategoryRepository
-import com.aliyayman.yds_app.repository.WordRepository
 import com.aliyayman.yds_app.service.myDatabase
 import com.aliyayman.yds_app.util.CustomSharedPreferences
 import com.google.firebase.firestore.ktx.firestore
@@ -57,8 +56,6 @@ class CategoryViewModel @Inject constructor(
         }
 
         customSharedPreferences.saveTime(System.nanoTime())
-
-
     }
 
     private fun showData(list: List<Category>) {
@@ -76,9 +73,9 @@ class CategoryViewModel @Inject constructor(
                 .addOnSuccessListener { result ->
                     for (document in result) {
                         println(document.data)
-                        val categoryFire = document.toObject(CategoryFire::class.java)
-                        if (categoryFire.categoryId != null) {
-                            val category = Category(categoryFire.categoryId, categoryFire.name)
+                        val firebaseCategory = document.toObject(FirebaseCategory::class.java)
+                        if (firebaseCategory.categoryId != null) {
+                            val category = Category(firebaseCategory.categoryId, firebaseCategory.name)
                             categoryList.add(category)
                         }
                     }

@@ -5,7 +5,7 @@ import android.util.Log
 import androidx.work.Worker
 import androidx.work.WorkerParameters
 import com.aliyayman.yds_app.data.RemoteConfig
-import com.aliyayman.yds_app.model.NewWord
+import com.aliyayman.yds_app.model.FirebaseWord
 import com.aliyayman.yds_app.model.Word
 import com.aliyayman.yds_app.service.myDatabase
 import com.google.firebase.firestore.ktx.firestore
@@ -42,9 +42,9 @@ class UploadWorker(val appContext: Context, workerParams: WorkerParameters) :
                 .get()
                 .addOnSuccessListener { result ->
                     for (document in result) {
-                        val newWord = document.toObject(NewWord::class.java)
+                        val firebaseWord = document.toObject(FirebaseWord::class.java)
                         val word =
-                            Word(newWord.ing, newWord.tc, newWord.isFavorite, newWord.categoryId)
+                            Word(firebaseWord.ing, firebaseWord.tc, firebaseWord.isFavorite, firebaseWord.categoryId)
                         wordList.add(word)
                     }
                     storeInRoom(wordList)
