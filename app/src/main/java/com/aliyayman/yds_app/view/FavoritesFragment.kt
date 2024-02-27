@@ -1,6 +1,8 @@
 package com.aliyayman.yds_app.view
 
 import android.os.Bundle
+import android.speech.tts.TextToSpeech
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,12 +14,14 @@ import com.aliyayman.yds_app.adapter.WordAdapter
 import com.aliyayman.yds_app.databinding.FragmentFavoritesBinding
 import com.aliyayman.yds_app.viewmodel.WordViewModel
 import dagger.hilt.android.AndroidEntryPoint
+import java.util.Locale
 
 @AndroidEntryPoint
-class FavoritesFragment : Fragment() {
+class FavoritesFragment : Fragment(), TextToSpeech.OnInitListener {
     private lateinit var binding: FragmentFavoritesBinding
     private var wordAdapter = WordAdapter()
     private lateinit var viewModel: WordViewModel
+    private lateinit var tts: TextToSpeech
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -38,6 +42,7 @@ class FavoritesFragment : Fragment() {
         viewModel.refreshFavoriteWord()
         binding.recyclerViewWordFav.layoutManager = LinearLayoutManager(context)
         binding.recyclerViewWordFav.adapter = wordAdapter
+        tts = TextToSpeech(requireContext(), this)
 
         binding.swipeRefreshLayout.setOnRefreshListener {
             binding.recyclerViewWordFav.visibility = View.GONE
@@ -51,8 +56,10 @@ class FavoritesFragment : Fragment() {
         wordAdapter.onItemFavClicked = { word ->
             if (word.isFavorite == true) {
                 viewModel.removeFavorite(word)
-            } else
-                viewModel.addFavorite(word)
+            }
+        }
+        wordAdapter.onItemClicked ={word ->
+            speakOut(word)
         }
         observeRefresh()
     }
@@ -67,6 +74,10 @@ class FavoritesFragment : Fragment() {
         viewModel.isRefresh.observe(viewLifecycleOwner){
             observeWordLiveData()
         }
+    }
+
+    private fun speakOut(name: String) {
+        tts.speak(name, TextToSpeech.QUEUE_FLUSH, null, "")
     }
     private fun observeLiveData() {
         viewModel.getFavoriteWords()
@@ -97,5 +108,16 @@ class FavoritesFragment : Fragment() {
                 }
             }
         })
+    }
+
+    override fun onInit(status: Int) {
+        if (status == TextToSpeech.SUCCESS) {
+            val result = tts!!.setLanguage(Locale.US)
+            if (result == TextToSpeech.LANG_MISSING_DATA || result == TextToSpeech.LANG_NOT_SUPPORTED) {
+                Log.e("TTS", "The Language not supported!")
+            } else {
+                Log.e("TTS", "The Language not supported!")
+            }
+        }
     }
 }

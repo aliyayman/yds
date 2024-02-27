@@ -2,7 +2,6 @@ package com.aliyayman.yds_app.adapter
 
 
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.AsyncListDiffer
@@ -52,15 +51,13 @@ class WordAdapter(
         if (differ.currentList[position].isFavorite == true) {
             holder.view.imgIsFavorite.setImageResource(R.drawable.ic_fill_favorite)
 
-
         } else if (differ.currentList[position].isFavorite == false) {
             holder.view.imgIsFavorite.setImageResource(R.drawable.ic_favorite)
-
-
         }
 
         holder.view.imgIsFavorite.setOnClickListener{
-        println(differ.currentList[position])
+        println(differ.currentList[position] )
+        println(differ.currentList[position].id)
         onItemFavClicked?.invoke(differ.currentList[position])
     }
     }
