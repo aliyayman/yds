@@ -68,7 +68,7 @@
                     app:srcCompat="@drawable/ic_sound" />
 
                 <ImageView
-                    android:id="@+id/imageViewFavorite"
+                    android:id="@+id/imgIsFavorite"
                     android:layout_width="21dp"
                     android:layout_height="32dp"
                     android:layout_marginEnd="16dp"
@@ -77,17 +77,7 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
                     app:srcCompat="@drawable/ic_favorite" />
-                <ImageView
-                    android:id="@+id/imageViewFavoriteFill"
-                    android:layout_width="21dp"
-                    android:layout_height="32dp"
-                    android:layout_marginEnd="16dp"
-                    android:visibility="invisible"
-                    android:backgroundTintMode="@color/red"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:srcCompat="@drawable/ic_fill_favorite" />
+
 
 
             </androidx.constraintlayout.widget.ConstraintLayout>

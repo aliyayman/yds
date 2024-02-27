@@ -50,27 +50,18 @@ class WordAdapter(
             onItemClicked?.invoke(differ.currentList[position].ing.toString())
         }
         if (differ.currentList[position].isFavorite == true) {
-            holder.view.imageViewFavorite.visibility = View.GONE
-            holder.view.imageViewFavoriteFill.visibility = View.VISIBLE
-            holder.view.imageViewFavoriteFill.setOnClickListener {
-                holder.view.imageViewFavorite.visibility = View.VISIBLE
-                holder.view.imageViewFavoriteFill.visibility = View.GONE
-                println(differ.currentList[position])
-                onItemFavClicked?.invoke(differ.currentList[position])
-            }
+            holder.view.imgIsFavorite.setImageResource(R.drawable.ic_fill_favorite)
+
+
         } else if (differ.currentList[position].isFavorite == false) {
-            holder.view.imageViewFavorite.setOnClickListener {
-                println(differ.currentList[position])
-                it.visibility = View.GONE
-                holder.view.imageViewFavoriteFill.visibility = View.VISIBLE
-                onItemFavClicked?.invoke(differ.currentList[position])
-            }
-            holder.view.imageViewFavoriteFill.setOnClickListener {
-                it.visibility = View.GONE
-                holder.view.imageViewFavorite.visibility = View.VISIBLE
-                onItemFavClicked?.invoke(differ.currentList[position])
-            }
+            holder.view.imgIsFavorite.setImageResource(R.drawable.ic_favorite)
+
 
         }
+
+        holder.view.imgIsFavorite.setOnClickListener{
+        println(differ.currentList[position])
+        onItemFavClicked?.invoke(differ.currentList[position])
+    }
     }
 }

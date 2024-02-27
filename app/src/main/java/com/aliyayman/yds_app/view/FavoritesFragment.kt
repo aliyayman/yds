@@ -44,19 +44,33 @@ class FavoritesFragment : Fragment() {
             binding.errorWordTextview.visibility = View.GONE
             binding.loadingWordProgressbar.visibility = View.VISIBLE
             binding.swipeRefreshLayout.isRefreshing = false
-            viewModel.refreshFavoriteWord()
+            observeRefresh()
         }
+        observeLiveData()
 
         wordAdapter.onItemFavClicked = { word ->
             if (word.isFavorite == true) {
-                viewModel.removeAndGetFavorite(word)
+                viewModel.removeFavorite(word)
             } else
                 viewModel.addFavorite(word)
         }
+        observeRefresh()
+    }
+
+
+    private fun observeWordLiveData(){
+        viewModel.refreshFavoriteWord()
         observeLiveData()
     }
+
+    private fun observeRefresh(){
+        viewModel.isRefresh.observe(viewLifecycleOwner){
+            observeWordLiveData()
+        }
+    }
     private fun observeLiveData() {
-        viewModel.words.observe(viewLifecycleOwner, Observer { words ->
+        viewModel.getFavoriteWords()
+        viewModel.favoriteWords.observe(viewLifecycleOwner, Observer { words ->
             words?.let {
                 binding.recyclerViewWordFav.visibility = View.VISIBLE
                 wordAdapter.differ.submitList(words)

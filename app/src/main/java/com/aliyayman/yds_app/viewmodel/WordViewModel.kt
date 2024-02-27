@@ -1,5 +1,6 @@
 package com.aliyayman.yds_app.viewmodel
 
+import SingleLiveEvent
 import android.app.Application
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
@@ -14,10 +15,12 @@ import javax.inject.Inject
 class WordViewModel @Inject constructor(
     application: Application,
     private val repository: WordRepository
-    ) : BaseViewModel(application) {
-    val words = MutableLiveData<List<Word>>()
+) : BaseViewModel(application) {
+    val words = SingleLiveEvent<List<Word>>()
+    val favoriteWords = MutableLiveData<List<Word>>()
     val wordError = MutableLiveData<Boolean>()
     val wordLoading = MutableLiveData<Boolean>()
+    val isRefresh = MutableLiveData<Boolean>()
 
     fun refreshWord(id: Int) {
         getFromRoom(id)
@@ -33,18 +36,20 @@ class WordViewModel @Inject constructor(
     fun addFavorite(word: Word) {
         viewModelScope.launch(Dispatchers.IO) {
             repository.updateFavorite(true, word.id)
+            isRefresh.postValue(true)
         }
     }
 
     fun removeFavorite(word: Word) {
         viewModelScope.launch(Dispatchers.Main) {
             repository.updateFavorite(false, word.id)
+            isRefresh.postValue(true)
         }
     }
-    fun removeAndGetFavorite(word: Word) {
+
+    fun getFavoriteWords() {
         viewModelScope.launch(Dispatchers.IO) {
-            repository.updateFavorite(false, word.id)
-            words.postValue(repository.getFavoritesWord())
+            favoriteWords.postValue(repository.getFavoritesWord())
         }
     }
 

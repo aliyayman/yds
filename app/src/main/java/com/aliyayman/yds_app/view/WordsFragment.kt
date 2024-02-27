@@ -45,24 +45,24 @@ class WordsFragment : Fragment(), TextToSpeech.OnInitListener, CoroutineScope {
         }
         tts = TextToSpeech(requireContext(), this)
         viewModel = ViewModelProvider(this).get(WordViewModel::class.java)
-        viewModel.refreshWord(categoryId)
+
         binding.recyclerViewWord.layoutManager = LinearLayoutManager(context)
         binding.recyclerViewWord.adapter = wordAdapter
+
+        observeWordLiveData()
+        observeRefresh()
+
+
         wordAdapter.onItemClicked = { word ->
             speakOut(word)
         }
         wordAdapter.onItemFavClicked = { word ->
-            if (word.isFavorite == true) {
+            if (word.isFavorite == true) viewModel.removeFavorite(word)
+            else viewModel.addFavorite(word)
 
-                viewModel.removeFavorite(word)
-                viewModel.refreshWord(categoryId)
-               viewModel.words.observe(viewLifecycleOwner, Observer {
-                   wordAdapter.differ.submitList(it)
-               })
-            } else
-                viewModel.addFavorite(word)
+            viewModel.refreshWord(categoryId)
         }
-            binding.swipeRefreshLayout.setOnRefreshListener {
+        binding.swipeRefreshLayout.setOnRefreshListener {
             binding.recyclerViewWord.visibility = View.GONE
             binding.errorWordTextview.visibility = View.GONE
             binding.loadingWordProgressbar.visibility = View.VISIBLE
@@ -71,6 +71,18 @@ class WordsFragment : Fragment(), TextToSpeech.OnInitListener, CoroutineScope {
         }
         observeLiveData()
     }
+
+    private fun observeWordLiveData(){
+        viewModel.refreshWord(categoryId)
+         observeLiveData()
+    }
+
+    private fun observeRefresh(){
+        viewModel.isRefresh.observe(viewLifecycleOwner){
+            observeWordLiveData()
+        }
+    }
+
     private fun speakOut(name: String) {
         tts.speak(name, TextToSpeech.QUEUE_FLUSH, null, "")
     }
