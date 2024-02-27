@@ -10,9 +10,12 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.lifecycle.Observer
+import androidx.recyclerview.widget.ItemTouchHelper
+import androidx.recyclerview.widget.RecyclerView
 import com.aliyayman.yds_app.adapter.WordAdapter
 import com.aliyayman.yds_app.databinding.FragmentFavoritesBinding
 import com.aliyayman.yds_app.viewmodel.WordViewModel
+import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 import java.util.Locale
 
@@ -49,21 +52,51 @@ class FavoritesFragment : Fragment(), TextToSpeech.OnInitListener {
             binding.errorWordTextview.visibility = View.GONE
             binding.loadingWordProgressbar.visibility = View.VISIBLE
             binding.swipeRefreshLayout.isRefreshing = false
-            observeRefresh()
+          observeLiveData()
         }
         observeLiveData()
 
-        wordAdapter.onItemFavClicked = { word ->
+      /*  wordAdapter.onItemFavClicked = { word ->
             if (word.isFavorite == true) {
                 viewModel.removeFavorite(word)
             }
-        }
+        }*/
+        observeRefresh()
+
+
         wordAdapter.onItemClicked ={word ->
             speakOut(word)
         }
-        observeRefresh()
-    }
 
+        val itemTouchHelperCallback = object : ItemTouchHelper.SimpleCallback(
+            ItemTouchHelper.UP or ItemTouchHelper.DOWN,
+            ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT
+        ){
+            override fun onMove(
+                recyclerView: RecyclerView,
+                viewHolder: RecyclerView.ViewHolder,
+                target: RecyclerView.ViewHolder
+            ): Boolean {
+                return  true
+            }
+
+            override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
+                val position = viewHolder.adapterPosition
+                val word = wordAdapter.differ.currentList[position]
+                viewModel.removeFavorite(word)
+                Snackbar.make(view,"Successfully deleted ${word.ing}", Snackbar.LENGTH_SHORT).apply {
+                    setAction("Undo"){
+                        viewModel.addFavorite(word)
+                    }
+                    show()
+                }
+            }
+
+        }
+        ItemTouchHelper(itemTouchHelperCallback).apply {
+            attachToRecyclerView(binding.recyclerViewWordFav)
+        }
+    }
 
     private fun observeWordLiveData(){
         viewModel.refreshFavoriteWord()
