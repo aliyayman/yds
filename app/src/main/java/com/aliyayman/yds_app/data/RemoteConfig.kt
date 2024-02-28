@@ -29,6 +29,10 @@ class RemoteConfig {
         }
     }
 
+    companion object{
+        const val LAST_VERSION ="last_version"
+    }
+
 
     init {
         firebaseRemoteConfig.fetchAndActivate()

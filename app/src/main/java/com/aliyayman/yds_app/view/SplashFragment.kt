@@ -13,6 +13,7 @@ import androidx.work.PeriodicWorkRequestBuilder
 import androidx.work.WorkManager
 import androidx.work.WorkRequest
 import com.aliyayman.yds_app.R
+import com.aliyayman.yds_app.data.RemoteConfig.Companion.LAST_VERSION
 import com.aliyayman.yds_app.databinding.FragmentSplashBinding
 import com.aliyayman.yds_app.util.UploadWorker
 import com.google.android.material.snackbar.Snackbar
@@ -46,6 +47,7 @@ class SplashFragment : Fragment() {
         WorkManager.getInstance(view.context)
             .enqueue(uploadWorkRequest)
 
+
            checkUpdate(view)
     }
 
@@ -74,10 +76,8 @@ class SplashFragment : Fragment() {
         firebaseRemoteConfig.setDefaultsAsync(R.xml.firebase_remote_config)
         firebaseRemoteConfig.fetchAndActivate().addOnCompleteListener {
                 if (it.isSuccessful){
-                    val lastVersion = firebaseRemoteConfig.getDouble("last_version")
-                    println("last version:$lastVersion")
+                    val lastVersion = firebaseRemoteConfig.getDouble(LAST_VERSION)
                     val currentVersion = requireActivity().packageManager.getPackageInfo(requireActivity().packageName,0).versionName.toDouble()
-                    println("current:$currentVersion")
                     if(currentVersion < lastVersion){
                         isUpdate = true
                         binding.updateButton.visibility = View.VISIBLE
