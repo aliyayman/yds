@@ -49,8 +49,9 @@ class SplashFragment : Fragment() {
            checkUpdate(view)
     }
 
-    private fun checkVersion(){
+    private fun checkVersion(view: View){
         if (isUpdate){
+            Snackbar.make(view,"You need to update your application", Snackbar.LENGTH_INDEFINITE).show()
 
         }else{
             object : CountDownTimer(3000, 1000) {
@@ -86,7 +87,7 @@ class SplashFragment : Fragment() {
                             startActivity(intent)
                         }
                     }
-                    checkVersion()
+                    checkVersion(view)
                 }
             else if (!it.isSuccessful){
                     Snackbar.make(view,"Check Your Internet Connection ", Snackbar.LENGTH_INDEFINITE).show()
