@@ -15,6 +15,7 @@ import androidx.work.WorkRequest
 import com.aliyayman.yds_app.R
 import com.aliyayman.yds_app.databinding.FragmentSplashBinding
 import com.aliyayman.yds_app.util.UploadWorker
+import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig
 import java.util.concurrent.TimeUnit
 
@@ -45,7 +46,7 @@ class SplashFragment : Fragment() {
         WorkManager.getInstance(view.context)
             .enqueue(uploadWorkRequest)
 
-           checkUpdate()
+           checkUpdate(view)
     }
 
     private fun checkVersion(){
@@ -68,7 +69,7 @@ class SplashFragment : Fragment() {
         }
     }
 
-    private fun checkUpdate()  {
+    private fun checkUpdate(view: View)  {
         firebaseRemoteConfig.setDefaultsAsync(R.xml.firebase_remote_config)
         firebaseRemoteConfig.fetchAndActivate().addOnCompleteListener {
                 if (it.isSuccessful){
@@ -86,6 +87,9 @@ class SplashFragment : Fragment() {
                         }
                     }
                     checkVersion()
+                }
+            else if (!it.isSuccessful){
+                    Snackbar.make(view,"Check Your Internet Connection ", Snackbar.LENGTH_INDEFINITE).show()
                 }
             }
     }

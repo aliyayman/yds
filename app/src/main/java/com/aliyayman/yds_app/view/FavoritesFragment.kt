@@ -109,15 +109,9 @@ class FavoritesFragment : Fragment(), TextToSpeech.OnInitListener {
         viewModel.getFavoriteWords()
         viewModel.favoriteWords.observe(viewLifecycleOwner, Observer { words ->
             words?.let {
-                if (words.isNotEmpty()){
                     binding.recyclerViewWordFav.visibility = View.VISIBLE
                     wordAdapter.differ.submitList(words)
                     binding.emptyTextView.visibility = View.GONE
-
-                }else{
-                    binding.emptyTextView.visibility = View.VISIBLE
-                }
-
             }
         })
         viewModel.wordError.observe(viewLifecycleOwner, Observer { error ->
