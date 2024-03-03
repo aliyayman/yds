@@ -9,14 +9,14 @@
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
         android:icon="@drawable/yds_icon_192"
-        android:label="@string/app_name"
+        android:label="@string/yds_app_name"
         android:roundIcon="@drawable/yds_icon_144"
         android:supportsRtl="true"
         android:theme="@style/Theme.Yds_app"
         tools:targetApi="31">
         <meta-data
             android:name="com.google.android.gms.ads.APPLICATION_ID"
-            android:value="ca-app-pub-5875015425896746~4613610349"/>
+            android:value="ca-app-pub-5875015425896746~2267137274"/>
         <activity
             android:name=".view.MainActivity"
             android:exported="true">

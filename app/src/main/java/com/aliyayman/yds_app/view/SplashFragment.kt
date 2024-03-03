@@ -96,7 +96,7 @@ class SplashFragment : Fragment() {
     }
 
     companion object{
-        const val PLAY_STORE_URL = "https://play.google.com/store/apps/details?id=com.aliyayman.sozluk4"
+        const val PLAY_STORE_URL = "https://play.google.com/store/apps/details?id=com.aliyayman.yds_app"
     }
 
 

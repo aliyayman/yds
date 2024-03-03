@@ -142,7 +142,7 @@
             android:layout_marginEnd="32dp"
             android:layout_marginBottom="8dp"
             app:adSize="SMART_BANNER"
-            app:adUnitId="ca-app-pub-5875015425896746/2911685865"
+            app:adUnitId="ca-app-pub-5875015425896746/8314010186"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"></com.google.android.gms.ads.AdView>
