@@ -13,7 +13,7 @@ class ResultViewModel(application: Application) : BaseViewModel(application) {
     }
     fun writeMessage(correctNumber: Int) :String{
         val wrongNumber = 10 - correctNumber
-        return "$correctNumber Correct, $wrongNumber Mistake"
+        return "Correct:$correctNumber     Mistake:$wrongNumber"
 
     }
     fun calculateRate(correctNumber: Int) :String{
