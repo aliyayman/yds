@@ -20,7 +20,7 @@
             android:layout_height="59dp"
             android:layout_marginBottom="160dp"
             android:text="Play Again"
-            android:textColor="@color/white"
+            android:textColor="@color/buttonText"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.497"

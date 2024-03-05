@@ -6,13 +6,10 @@
     <color name="red">#E11717</color>
     <color name="customBlue">#11C0F7</color>
     <color name="customLightBlue">#E1F4FA</color>
-    <color name="buttonText">@color/white</color>
-    <color name="buttonBackground">@color/customBlue</color>
-    <color name="appBackground">@color/customLightBlue</color>
+    <color name="buttonText">#FF000000</color>
+    <color name="buttonBackground">@color/customLightBlue</color>
+    <color name="appBackground">@color/black</color>
     <color name="categoryBackground">@color/white</color>
     <color name="categoryText">@color/black</color>
-    <color name="textColor">@color/black</color>
-
-
-    #E2F3FA
+    <color name="textColor">@color/white</color>
 </resources>
