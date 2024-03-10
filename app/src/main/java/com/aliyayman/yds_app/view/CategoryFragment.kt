@@ -61,6 +61,12 @@ class CategoryFragment : Fragment() {
             it.findNavController().navigate(action)
         }
 
+        binding.articleButton.setOnClickListener {
+            val action = CategoryFragmentDirections.actionCategoryFragmentToArticleFragment()
+            it.findNavController().navigate(action)
+        }
+
+
         observeLiveData()
 
         MobileAds.initialize(requireContext()) {}

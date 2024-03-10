@@ -29,6 +29,9 @@ object AppModule {
     @Provides
     @Singleton
     fun injectCategoryDao(database: myDatabase)=database.categoryDao()
+    @Provides
+    @Singleton
+    fun injectArticleDao(database: myDatabase)=database.articleDao()
 
 
     @Provides

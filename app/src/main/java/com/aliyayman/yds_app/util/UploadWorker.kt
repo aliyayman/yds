@@ -5,6 +5,7 @@ import android.util.Log
 import androidx.work.Worker
 import androidx.work.WorkerParameters
 import com.aliyayman.yds_app.data.RemoteConfig
+import com.aliyayman.yds_app.model.Article
 import com.aliyayman.yds_app.model.FirebaseWord
 import com.aliyayman.yds_app.model.Word
 import com.aliyayman.yds_app.service.myDatabase
@@ -21,6 +22,7 @@ import kotlin.coroutines.CoroutineContext
 class UploadWorker(val appContext: Context, workerParams: WorkerParameters) :
     Worker(appContext, workerParams), CoroutineScope {
     private var wordList = ArrayList<Word>()
+    private var articleList = ArrayList<Article>()
     private var rc = RemoteConfig()
     private val DATABASE_NAME = "allWords"
 
@@ -28,6 +30,7 @@ class UploadWorker(val appContext: Context, workerParams: WorkerParameters) :
     override fun doWork(): Result {
         launch {
             // getFromRemoteConfig(DATABASE_NAME)
+            getFromRemoteConfigArticle("reading")
             getDataFirebase()
         }
         println("do work çalıştı")
@@ -48,6 +51,27 @@ class UploadWorker(val appContext: Context, workerParams: WorkerParameters) :
                         wordList.add(word)
                     }
                     storeInRoom(wordList)
+                }
+                .addOnFailureListener { exception ->
+                    Log.w("TAG", "Error getting documents.", exception)
+                }
+        }
+    }
+
+    private fun getArticleFirebase() {
+        println("firebase work")
+        val db = Firebase.firestore
+        launch {
+            db.collection("articles")
+                .get()
+                .addOnSuccessListener { result ->
+                    for (document in result) {
+                        val firebaseArticle = document.toObject(Article::class.java)
+                        val article =
+                            Article(firebaseArticle.id, firebaseArticle.name, firebaseArticle.text)
+                        articleList.add(article)
+                    }
+                    storeInRoomArticle(articleList)
                 }
                 .addOnFailureListener { exception ->
                     Log.w("TAG", "Error getting documents.", exception)
@@ -87,6 +111,35 @@ class UploadWorker(val appContext: Context, workerParams: WorkerParameters) :
         }
     }
 
+    private fun getFromRemoteConfigArticle(name: String) {
+        var remoteConfig = rc.getInitial()
+        remoteConfig.fetchAndActivate().addOnCompleteListener {
+            if (it.isSuccessful) {
+                val json = remoteConfig.getString("$name")
+                try {
+                    val jsonArray = JSONArray(json)
+                    for (i in 0 until jsonArray.length()) {
+                        val jsonObject = jsonArray.getJSONObject(i)
+                        val id= jsonObject.getInt("id")
+                        val name = jsonObject.getString("name")
+                        val text = jsonObject.getString("text")
+
+                        val article = Article(id,name, text)
+                      //  addFirebaseArticle(article)
+                        articleList.add(article)
+                    }
+                    println("remoteconfigden gelen artile:")
+                    storeInRoomArticle(articleList)
+
+                } catch (e: Exception) {
+                    println(e.message)
+                }
+            } else {
+                println("NO Connected!")
+            }
+        }
+    }
+
     private fun addFirebase(getword: Word) {
         val db = Firebase.firestore
         val word = hashMapOf(
@@ -97,6 +150,25 @@ class UploadWorker(val appContext: Context, workerParams: WorkerParameters) :
         )
 
         db.collection("words")
+            .add(word)
+            .addOnSuccessListener { documentReference ->
+                Log.d("TAG", "DocumentSnapshot added with ID: ${documentReference.id}")
+            }
+            .addOnFailureListener { e ->
+                Log.w("TAG", "Error adding document", e)
+            }
+    }
+    private fun addFirebaseArticle(getword: Article) {
+        val db = Firebase.firestore
+        val word = hashMapOf(
+            "id" to getword.id,
+            "name" to getword.name,
+            "text" to getword.text,
+
+
+        )
+
+        db.collection("articles")
             .add(word)
             .addOnSuccessListener { documentReference ->
                 Log.d("TAG", "DocumentSnapshot added with ID: ${documentReference.id}")
@@ -119,6 +191,18 @@ class UploadWorker(val appContext: Context, workerParams: WorkerParameters) :
         }
     }
 
+    private fun storeInRoomArticle(list: List<Article>) {
+        launch {
+            val dao = myDatabase(appContext).articleDao()
+            val listLong = dao.insertAll(*list.toTypedArray())
+            var i = 0
+            while (i < list.size) {
+                list[i].id = listLong[i].toInt()
+                i += 1
+            }
+            println("added article in room")
+        }
+    }
     override val coroutineContext: CoroutineContext
         get() = Dispatchers.IO
 

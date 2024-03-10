@@ -22,6 +22,9 @@
         <action
             android:id="@+id/action_categoryFragment_to_favoritesFragment"
             app:destination="@id/favoritesFragment" />
+        <action
+            android:id="@+id/action_categoryFragment_to_articleFragment"
+            app:destination="@id/articleFragment" />
     </fragment>
     <fragment
         android:id="@+id/wordsFragment"
@@ -87,5 +90,23 @@
         <action
             android:id="@+id/action_favoritesFragment_to_categoryFragment"
             app:destination="@id/categoryFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/articleFragment"
+        android:name="com.aliyayman.yds_app.view.ArticleFragment"
+        android:label="fragment_article"
+        tools:layout="@layout/fragment_article" >
+        <action
+            android:id="@+id/action_articleFragment_to_articleDetailFragment"
+            app:destination="@id/articleDetailFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/articleDetailFragment"
+        android:name="com.aliyayman.yds_app.view.ArticleDetailFragment"
+        android:label="fragment_article_detail"
+        tools:layout="@layout/fragment_article_detail" >
+        <argument
+            android:name="articleId"
+            android:defaultValue="1" />
     </fragment>
 </navigation>
