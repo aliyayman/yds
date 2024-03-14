@@ -12,6 +12,8 @@
     <color name="categoryBackground">@color/white</color>
     <color name="categoryText">@color/black</color>
     <color name="textColor">@color/black</color>
+    <color name="aricleTextColor">@color/black</color>
+    <color name="aricleTitleColor">@color/red</color>
 
 
     #E2F3FA

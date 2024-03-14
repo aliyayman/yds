@@ -13,23 +13,32 @@
         <TextView
             android:id="@+id/articleTitle"
             android:textStyle="bold"
+            android:gravity="center"
             android:textSize="28sp"
-            android:textColor="@color/red"
+            android:textColor="@color/aricleTitleColor"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Penguıns"
             android:layout_marginBottom="10dp"
             ></TextView>
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
         <TextView
-            android:layout_marginLeft="5dp"
+            android:layout_marginLeft="10dp"
             android:layout_marginRight="5dp"
             android:layout_marginBottom="5dp"
+            android:textColor="@color/aricleTextColor"
             android:id="@+id/articleBody"
-            android:textSize="18sp"
+            android:textSize="22sp"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:text="Penguıns"
             ></TextView>
+
+
+
+    </ScrollView>
 
     </LinearLayout>
 
