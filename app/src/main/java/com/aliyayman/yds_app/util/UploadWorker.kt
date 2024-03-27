@@ -24,13 +24,11 @@ class UploadWorker(val appContext: Context, workerParams: WorkerParameters) :
     private var wordList = ArrayList<Word>()
     private var articleList = ArrayList<Article>()
     private var rc = RemoteConfig()
-    private val DATABASE_NAME = "allWords"
 
 
     override fun doWork(): Result {
         launch {
-            // getFromRemoteConfig(DATABASE_NAME)
-            getFromRemoteConfigArticle("reading")
+            getArticleFirebase()
             getDataFirebase()
         }
         println("do work çalıştı")

@@ -14,6 +14,7 @@
     <color name="textColor">@color/black</color>
     <color name="aricleTextColor">@color/black</color>
     <color name="aricleTitleColor">@color/red</color>
+    <color name="categoryButtonText">@color/white</color>
 
 
     #E2F3FA

@@ -10,8 +10,9 @@
     <color name="buttonBackground">@color/customLightBlue</color>
     <color name="appBackground">@color/black</color>
     <color name="categoryBackground">@color/white</color>
-    <color name="categoryText">@color/black</color>
+    <color name="categoryText">@color/customBlue</color>
     <color name="textColor">@color/white</color>
     <color name="aricleTextColor">@color/white</color>
     <color name="aricleTitleColor">@color/red</color>
+    <color name="categoryButtonText">@color/customBlue</color>
 </resources>

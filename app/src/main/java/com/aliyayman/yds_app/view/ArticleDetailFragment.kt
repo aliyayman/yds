@@ -5,12 +5,11 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.viewModelScope
 import androidx.navigation.fragment.navArgs
 import com.aliyayman.yds_app.databinding.FragmentArticleDetailBinding
 import com.aliyayman.yds_app.model.Article
-import com.aliyayman.yds_app.service.myDatabase
 import com.aliyayman.yds_app.viewmodel.ArticleViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
@@ -50,24 +49,24 @@ class ArticleDetailFragment : Fragment(),CoroutineScope {
             print("article:"+articleId)
         }
 
-viewModel.viewModelScope.launch() {
-article= myDatabase.invoke(requireContext().applicationContext).articleDao().getArticleFromId(articleId)
-    binding.articleTitle.text = article.name
-    binding.articleBody.text = article.text
-}
-      //  print(article.id)
-
-
-           //  article = Article(articleId,"test","testbody")
-
-
-
-
-
-
-
+        viewModel.launch() {
+            article = viewModel.getArticleFromId(articleId)
+            observeLiveData()
+           // article = myDatabase.invoke(requireContext().applicationContext).articleDao().getArticleFromId(articleId)
+           // binding.articleTitle.text = article.name
+           // binding.articleBody.text = article.text
+        }
     }
 
+    private  fun observeLiveData() {
+        viewModel.myArticle.observe(viewLifecycleOwner, Observer { articles ->
+            articles?.let {
+                binding.articleTitle.text = articles.name
+                binding.articleBody.text = articles.text
+            }
+        })
+
+    }
 
     override val coroutineContext: CoroutineContext
         get() = Dispatchers.IO

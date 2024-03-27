@@ -8,6 +8,8 @@ import androidx.room.PrimaryKey
 data class Article(
     @PrimaryKey(autoGenerate = true)
     var id:  Int=0,
-    val name : String?,
-    val text : String?,
-){}
+    val name : String?= null,
+    val text : String?= null,
+
+){
+}

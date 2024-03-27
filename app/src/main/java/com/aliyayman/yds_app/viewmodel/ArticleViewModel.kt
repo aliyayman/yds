@@ -6,6 +6,7 @@ import androidx.lifecycle.viewModelScope
 import com.aliyayman.yds_app.model.Article
 import com.aliyayman.yds_app.repository.ArticleRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -16,7 +17,9 @@ class ArticleViewModel @Inject constructor(
     private val repository: ArticleRepository
 ) : BaseViewModel(application) {
     private var articleList = ArrayList<Article>()
-    private  var article = Article(1,"","")
+    private var article  = Article(0,"","No data!")
+
+    val myArticle = MutableLiveData<Article>()
     val articles = MutableLiveData<List<Article>>()
     val articleError = MutableLiveData<Boolean>()
     val articleLoading = MutableLiveData<Boolean>()
@@ -32,17 +35,26 @@ class ArticleViewModel @Inject constructor(
         return articleList
     }
 
-     fun getArticleFromId(id:Int) : Article{
-       viewModelScope.launch {
-            article = repository.getArticleFromId(id)
-        }
+   suspend  fun getArticleFromId(id:Int) : Article{
 
-        return article
-    }
+       viewModelScope.async {
+           //article = myDatabase.invoke(getApplication()).articleDao().getArticleFromId(id)
+           article = repository.getArticleFromId(id)
+           showArticle(article)
+       }
+       return article
+   }
+
 
     private fun showData(list: List<Article>) {
         articles.postValue(list)
         articleError.value = false
         articleLoading.value = false
+    }
+
+    private fun showArticle(article: Article) {
+        myArticle.postValue(article)
+        articleError.value = true
+        articleLoading.value = true
     }
 }
