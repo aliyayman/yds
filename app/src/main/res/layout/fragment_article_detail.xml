@@ -1,45 +1,65 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".view.ArticleDetailFragment">
 
+    <ProgressBar
+        android:id="@+id/progressArticle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+    <TextView
+        android:id="@+id/errorArticle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="No data"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
 
     <LinearLayout
-        android:orientation="vertical"
+        android:id="@+id/lineerArticle"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
         <TextView
             android:id="@+id/articleTitle"
-            android:textStyle="bold"
-            android:gravity="center"
-            android:textSize="28sp"
-            android:textColor="@color/aricleTitleColor"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Penguıns"
             android:layout_marginBottom="10dp"
-            ></TextView>
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-        <TextView
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="5dp"
-            android:layout_marginBottom="5dp"
-            android:textColor="@color/aricleTextColor"
-            android:id="@+id/articleBody"
-            android:textSize="22sp"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:gravity="center"
             android:text="Penguıns"
-            ></TextView>
+            android:textColor="@color/aricleTitleColor"
+            android:textSize="28sp"
+            android:textStyle="bold"></TextView>
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/articleBody"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="5dp"
+                android:layout_marginBottom="5dp"
+                android:text="Penguıns"
+                android:textColor="@color/aricleTextColor"
+                android:textSize="22sp"></TextView>
 
 
-
-    </ScrollView>
+        </ScrollView>
 
     </LinearLayout>
 
-</FrameLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

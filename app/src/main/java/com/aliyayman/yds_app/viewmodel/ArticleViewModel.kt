@@ -5,8 +5,8 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.aliyayman.yds_app.model.Article
 import com.aliyayman.yds_app.repository.ArticleRepository
+import com.aliyayman.yds_app.util.Resourse
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -16,45 +16,32 @@ class ArticleViewModel @Inject constructor(
     application: Application,
     private val repository: ArticleRepository
 ) : BaseViewModel(application) {
-    private var articleList = ArrayList<Article>()
-    private var article  = Article(0,"","No data!")
 
-    val myArticle = MutableLiveData<Article>()
-    val articles = MutableLiveData<List<Article>>()
-    val articleError = MutableLiveData<Boolean>()
-    val articleLoading = MutableLiveData<Boolean>()
+    val myArticle = MutableLiveData<Resourse<Article>>()
+    val articles = MutableLiveData<Resourse<List<Article>>>()
 
+    fun getAllArticle() {
+        viewModelScope.launch {
+            articles.postValue(Resourse.Loading())
+            try {
+                val articleList = repository.getAllArticles() as ArrayList<Article>
+                articles.postValue(Resourse.Success(articleList))
 
-    suspend fun getAllArticle() : List<Article> {
-       launch {
-            articleList = repository.getAllArticles() as ArrayList<Article>
-           showData(articleList)
-
+            } catch (e: Exception) {
+                articles.postValue(Resourse.Error(e.message.toString()))
+            }
         }
-
-        return articleList
     }
 
-   suspend  fun getArticleFromId(id:Int) : Article{
-
-       viewModelScope.async {
-           //article = myDatabase.invoke(getApplication()).articleDao().getArticleFromId(id)
-           article = repository.getArticleFromId(id)
-           showArticle(article)
-       }
-       return article
-   }
-
-
-    private fun showData(list: List<Article>) {
-        articles.postValue(list)
-        articleError.value = false
-        articleLoading.value = false
-    }
-
-    private fun showArticle(article: Article) {
-        myArticle.postValue(article)
-        articleError.value = true
-        articleLoading.value = true
+    fun getArticleFromId(id: Int) {
+        viewModelScope.launch {
+            myArticle.postValue(Resourse.Loading())
+            try {
+                val article = repository.getArticleFromId(id)
+                myArticle.postValue(Resourse.Success(article))
+            } catch (e: Exception) {
+                myArticle.postValue(Resourse.Error(e.message.toString()))
+            }
+        }
     }
 }

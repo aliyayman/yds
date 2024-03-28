@@ -1,6 +1,7 @@
 package com.aliyayman.yds_app.view
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -9,21 +10,19 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.navArgs
 import com.aliyayman.yds_app.databinding.FragmentArticleDetailBinding
-import com.aliyayman.yds_app.model.Article
+import com.aliyayman.yds_app.util.Resourse
 import com.aliyayman.yds_app.viewmodel.ArticleViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 import kotlin.coroutines.CoroutineContext
 
 @AndroidEntryPoint
-class ArticleDetailFragment : Fragment(),CoroutineScope {
+class ArticleDetailFragment : Fragment(), CoroutineScope {
     private lateinit var binding: FragmentArticleDetailBinding
     val args: ArticleDetailFragmentArgs by navArgs<ArticleDetailFragmentArgs>()
     private var articleId = 0
-    private  lateinit var  viewModel : ArticleViewModel
-    private lateinit var article : Article
+    private lateinit var viewModel: ArticleViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -46,26 +45,37 @@ class ArticleDetailFragment : Fragment(),CoroutineScope {
 
         arguments?.let {
             articleId = args.articleId
-            print("article:"+articleId)
+            viewModel.getArticleFromId(articleId)
         }
-
-        viewModel.launch() {
-            article = viewModel.getArticleFromId(articleId)
-            observeLiveData()
-           // article = myDatabase.invoke(requireContext().applicationContext).articleDao().getArticleFromId(articleId)
-           // binding.articleTitle.text = article.name
-           // binding.articleBody.text = article.text
-        }
+        observeLiveData()
     }
 
-    private  fun observeLiveData() {
-        viewModel.myArticle.observe(viewLifecycleOwner, Observer { articles ->
-            articles?.let {
-                binding.articleTitle.text = articles.name
-                binding.articleBody.text = articles.text
+    private fun observeLiveData() {
+        viewModel.myArticle.observe(viewLifecycleOwner, Observer {
+            when (it) {
+                is Resourse.Loading -> {
+                    binding.lineerArticle.visibility = View.GONE
+                    binding.errorArticle.visibility = View.GONE
+                    Log.e("ArticleDetail", "LOADING")
+                }
+
+                is Resourse.Success -> {
+                    binding.progressArticle.visibility = View.GONE
+                    binding.errorArticle.visibility = View.GONE
+                    binding.lineerArticle.visibility = View.VISIBLE
+                    binding.articleTitle.text = it.data?.name
+                    binding.articleBody.text = it.data?.text
+                    Log.e("ArticleDetail", "SUCCESS")
+                }
+
+                is Resourse.Error -> {
+                    binding.errorArticle.visibility = View.VISIBLE
+                    binding.progressArticle.visibility = View.GONE
+                    binding.lineerArticle.visibility = View.GONE
+                    Log.e("ArticleDetail", "ERROR")
+                }
             }
         })
-
     }
 
     override val coroutineContext: CoroutineContext

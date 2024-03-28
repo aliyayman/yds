@@ -1,6 +1,7 @@
 package com.aliyayman.yds_app.view
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,11 +11,12 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.aliyayman.yds_app.adapter.ArticleAdapter
 import com.aliyayman.yds_app.databinding.FragmentArticleBinding
+import com.aliyayman.yds_app.model.Article
+import com.aliyayman.yds_app.util.Resourse
 import com.aliyayman.yds_app.viewmodel.ArticleViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 import kotlin.coroutines.CoroutineContext
 
 @AndroidEntryPoint
@@ -47,43 +49,34 @@ class ArticleFragment : Fragment(),CoroutineScope {
         binding.recyclerViewArticle.layoutManager = LinearLayoutManager(context)
         binding.recyclerViewArticle.adapter = articleAdapter
 
-        launch {
-            viewModel.getAllArticle()
-        }
+        viewModel.getAllArticle()
         observeLiveData()
-
-
-
 
     }
 
     private  fun observeLiveData(){
-        viewModel.articles.observe(viewLifecycleOwner, Observer {articles->
-            articles?.let {
-                binding.recyclerViewArticle.visibility = View.VISIBLE
-                articleAdapter.updateArticleList(articles)
+        viewModel.articles.observe(viewLifecycleOwner, Observer {
+            when(it){
+                is Resourse.Loading -> {
+                    binding.recyclerViewArticle.visibility = View.GONE
+                    binding.errorTextview.visibility = View.GONE
+                    Log.e("Article", "LOADING")
+                }
+                is Resourse.Success -> {
+                    binding.recyclerViewArticle.visibility = View.VISIBLE
+                    binding.errorTextview.visibility = View.GONE
+                    binding.loadingProgressbar.visibility = View.GONE
+                    articleAdapter.updateArticleList(it.data as List<Article>)
+                    Log.e("Article", "Succes")
 
-            }
-        })
-        viewModel.articleError.observe(viewLifecycleOwner, Observer {error->
-            error?.let {
-                if (it){
+
+                }
+                is Resourse.Error -> {
                     binding.errorTextview.visibility = View.VISIBLE
                     binding.recyclerViewArticle.visibility = View.GONE
-                }else {
-                    binding.errorTextview.visibility = View.GONE
-                }
-            }
-
-        })
-        viewModel.articleLoading.observe(viewLifecycleOwner, Observer {looding->
-            looding?.let {
-                if(it){
-                    binding.loadingProgressbar.visibility = View.VISIBLE
-                    binding.recyclerViewArticle.visibility = View.GONE
-                    binding.errorTextview.visibility = View.GONE
-                }else{
                     binding.loadingProgressbar.visibility = View.GONE
+                    Log.e("Article", "Error")
+
                 }
             }
         })
