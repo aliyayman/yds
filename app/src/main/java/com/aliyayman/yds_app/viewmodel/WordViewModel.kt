@@ -1,6 +1,5 @@
 package com.aliyayman.yds_app.viewmodel
 
-import SingleLiveEvent
 import android.app.Application
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
@@ -18,9 +17,7 @@ class WordViewModel @Inject constructor(
     private val repository: WordRepository
 ) : BaseViewModel(application) {
     val words = MutableLiveData<Resourse<List<Word>>>()
-    val favoriteWords = MutableLiveData<List<Word>>()
-    val wordError = MutableLiveData<Boolean>()
-    val wordLoading = MutableLiveData<Boolean>()
+    val favoriteWords = MutableLiveData<Resourse<List<Word>>>()
     val isRefresh = MutableLiveData<Boolean>()
 
     fun refreshWord(id: Int) {
@@ -28,9 +25,15 @@ class WordViewModel @Inject constructor(
     }
 
     fun refreshFavoriteWord() {
-        launch {
-            val roomList=repository.getFavoritesWord()
-            showWord(roomList)
+        viewModelScope.launch {
+            favoriteWords.postValue(Resourse.Loading())
+            try {
+                val roomList=repository.getFavoritesWord()
+                favoriteWords.postValue(Resourse.Success(roomList))
+            } catch (e: Exception) {
+                favoriteWords.postValue(Resourse.Error(e.message.toString()))
+            }
+
         }
     }
 
@@ -50,7 +53,14 @@ class WordViewModel @Inject constructor(
 
     fun getFavoriteWords() {
         viewModelScope.launch(Dispatchers.IO) {
-            favoriteWords.postValue(repository.getFavoritesWord())
+            favoriteWords.postValue(Resourse.Loading())
+            try {
+                val roomList=repository.getFavoritesWord()
+                favoriteWords.postValue(Resourse.Success(roomList))
+            } catch (e: Exception) {
+                favoriteWords.postValue(Resourse.Error(e.message.toString()))
+            }
+
         }
     }
 
@@ -66,9 +76,4 @@ class WordViewModel @Inject constructor(
         }
     }
 
-  private fun showWord(wordlist: List<Word>) {
-        favoriteWords.postValue(wordlist)
-        wordError.value = false
-        wordLoading.value = false
-    }
 }

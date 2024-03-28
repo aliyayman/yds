@@ -14,6 +14,8 @@ import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.aliyayman.yds_app.adapter.WordAdapter
 import com.aliyayman.yds_app.databinding.FragmentFavoritesBinding
+import com.aliyayman.yds_app.model.Word
+import com.aliyayman.yds_app.util.Resourse
 import com.aliyayman.yds_app.viewmodel.WordViewModel
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
@@ -105,38 +107,32 @@ class FavoritesFragment : Fragment(), TextToSpeech.OnInitListener {
     private fun speakOut(name: String) {
         tts.speak(name, TextToSpeech.QUEUE_FLUSH, null, "")
     }
-    private fun observeLiveData() {
+    private  fun observeLiveData(){
         viewModel.getFavoriteWords()
-        viewModel.favoriteWords.observe(viewLifecycleOwner, Observer { words ->
-            words?.let {
-                    binding.recyclerViewWordFav.visibility = View.VISIBLE
-                    wordAdapter.differ.submitList(words)
-                    binding.emptyTextView.visibility = View.GONE
-            }
-        })
-        viewModel.wordError.observe(viewLifecycleOwner, Observer { error ->
-            error?.let {
-                if (it) {
-                    binding.errorWordTextview.visibility = View.VISIBLE
-                    binding.loadingWordProgressbar.visibility = View.GONE
-                } else {
-                    binding.errorWordTextview.visibility = View.GONE
-                }
-            }
-        })
-        viewModel.wordLoading.observe(viewLifecycleOwner, Observer { looding ->
-            looding?.let {
-                if (it) {
-                    binding.loadingWordProgressbar.visibility = View.VISIBLE
-                    binding.errorWordTextview.visibility = View.GONE
+        viewModel.favoriteWords.observe(viewLifecycleOwner, Observer {
+            when (it){
+                is Resourse.Loading -> {
                     binding.recyclerViewWordFav.visibility = View.GONE
-                } else {
+                    binding.errorWordTextview.visibility = View.GONE
+
+                }
+                is Resourse.Success -> {
                     binding.loadingWordProgressbar.visibility = View.GONE
+                    binding.errorWordTextview.visibility = View.GONE
+                    binding.recyclerViewWordFav.visibility = View.VISIBLE
+                    wordAdapter.differ.submitList(it.data as List<Word>)
+                    if (it.data.isNotEmpty()){
+                        binding.emptyTextView.visibility = View.GONE
+                    }
+                }
+                is Resourse.Error -> {
+                    binding.loadingWordProgressbar.visibility = View.GONE
+                    binding.recyclerViewWordFav.visibility = View.GONE
+                    binding.errorWordTextview.visibility = View.VISIBLE
                 }
             }
         })
     }
-
     override fun onInit(status: Int) {
         if (status == TextToSpeech.SUCCESS) {
             val result = tts!!.setLanguage(Locale.US)
