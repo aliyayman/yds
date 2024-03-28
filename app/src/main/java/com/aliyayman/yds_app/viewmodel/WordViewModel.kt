@@ -6,6 +6,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.aliyayman.yds_app.model.Word
 import com.aliyayman.yds_app.repository.WordRepository
+import com.aliyayman.yds_app.util.Resourse
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -16,7 +17,7 @@ class WordViewModel @Inject constructor(
     application: Application,
     private val repository: WordRepository
 ) : BaseViewModel(application) {
-    val words = SingleLiveEvent<List<Word>>()
+    val words = MutableLiveData<Resourse<List<Word>>>()
     val favoriteWords = MutableLiveData<List<Word>>()
     val wordError = MutableLiveData<Boolean>()
     val wordLoading = MutableLiveData<Boolean>()
@@ -54,15 +55,19 @@ class WordViewModel @Inject constructor(
     }
 
     private fun getFromRoom(id: Int) {
-        wordLoading.value = true
-        launch {
-            val roomList = repository.getWordFromCategory(id)
-            showWord(roomList)
+        viewModelScope.launch {
+            words.postValue(Resourse.Loading())
+            try {
+                val roomList = repository.getWordFromCategory(id)
+                words.postValue(Resourse.Success(roomList))
+            } catch (e: Exception) {
+                words.postValue(Resourse.Error(e.message.toString()))
+            }
         }
     }
 
-    private fun showWord(wordlist: List<Word>) {
-        words.postValue(wordlist)
+  private fun showWord(wordlist: List<Word>) {
+        favoriteWords.postValue(wordlist)
         wordError.value = false
         wordLoading.value = false
     }

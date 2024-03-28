@@ -13,6 +13,8 @@ import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.aliyayman.yds_app.adapter.WordAdapter
 import com.aliyayman.yds_app.databinding.FragmentWordsBinding
+import com.aliyayman.yds_app.model.Word
+import com.aliyayman.yds_app.util.Resourse
 import com.aliyayman.yds_app.viewmodel.WordViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
@@ -86,31 +88,25 @@ class WordsFragment : Fragment(), TextToSpeech.OnInitListener, CoroutineScope {
     private fun speakOut(name: String) {
         tts.speak(name, TextToSpeech.QUEUE_FLUSH, null, "")
     }
-    private fun observeLiveData() {
-        viewModel.words.observe(viewLifecycleOwner, Observer { words ->
-            words?.let {
-                binding.recyclerViewWord.visibility = View.VISIBLE
-                wordAdapter.differ.submitList(words)
-            }
-        })
-        viewModel.wordError.observe(viewLifecycleOwner, Observer { error ->
-            error?.let {
-                if (it) {
-                    binding.errorWordTextview.visibility = View.VISIBLE
-                    binding.loadingWordProgressbar.visibility = View.GONE
-                } else {
-                    binding.errorWordTextview.visibility = View.GONE
-                }
-            }
-        })
-        viewModel.wordLoading.observe(viewLifecycleOwner, Observer { looding ->
-            looding?.let {
-                if (it) {
-                    binding.loadingWordProgressbar.visibility = View.VISIBLE
-                    binding.errorWordTextview.visibility = View.GONE
+
+    private  fun observeLiveData(){
+        viewModel.words.observe(viewLifecycleOwner, Observer {
+            when (it){
+                is Resourse.Loading -> {
                     binding.recyclerViewWord.visibility = View.GONE
-                } else {
+                    binding.errorWordTextview.visibility = View.GONE
+
+                }
+                is Resourse.Success -> {
                     binding.loadingWordProgressbar.visibility = View.GONE
+                    binding.errorWordTextview.visibility = View.GONE
+                    binding.recyclerViewWord.visibility = View.VISIBLE
+                    wordAdapter.differ.submitList(it.data as List<Word>)
+                }
+                is Resourse.Error -> {
+                    binding.loadingWordProgressbar.visibility = View.GONE
+                    binding.recyclerViewWord.visibility = View.GONE
+                    binding.errorWordTextview.visibility = View.VISIBLE
                 }
             }
         })
