@@ -39,6 +39,7 @@ class UploadWorker(val appContext: Context, workerParams: WorkerParameters) :
         println("firebase work")
         val db = Firebase.firestore
         launch {
+            val myList = myDatabase.invoke(appContext).wordDao().getAllWords()
             db.collection("words")
                 .get()
                 .addOnSuccessListener { result ->
@@ -48,7 +49,10 @@ class UploadWorker(val appContext: Context, workerParams: WorkerParameters) :
                             Word(firebaseWord.ing, firebaseWord.tc, firebaseWord.isFavorite, firebaseWord.categoryId)
                         wordList.add(word)
                     }
-                    storeInRoom(wordList)
+                    if (myList.isNullOrEmpty()){
+                        storeInRoom(wordList)
+                    }
+
                 }
                 .addOnFailureListener { exception ->
                     Log.w("TAG", "Error getting documents.", exception)
@@ -177,6 +181,7 @@ class UploadWorker(val appContext: Context, workerParams: WorkerParameters) :
     }
 
     private fun storeInRoom(list: List<Word>) {
+
         launch {
             val dao = myDatabase(appContext).wordDao()
             val listLong = dao.insertAll(*list.toTypedArray())

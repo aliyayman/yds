@@ -18,7 +18,7 @@ interface WordDao {
     suspend fun updateFavorite(isFavorite: Boolean,id:Int)
     @Query("SELECT * FROM word")
     suspend fun getAllWords(): List<Word>
-    @Query("SELECT * FROM word WHERE categoryId=:categoryid")
+    @Query("SELECT * FROM word WHERE categoryId=:categoryid ORDER BY ing ASC ")
     suspend fun getWordFromCategory(categoryid: Int): List<Word>
     @Query("SELECT * FROM word  ORDER BY RANDOM() LIMIT 10")
     suspend fun getWordTen(): List<Word>
