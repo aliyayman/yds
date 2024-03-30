@@ -8,9 +8,9 @@
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
-        android:icon="@drawable/yds_icon_192"
+        android:icon="@drawable/icon2"
         android:label="@string/yds_app_name"
-        android:roundIcon="@drawable/yds_icon_144"
+        android:roundIcon="@drawable/icon2"
         android:supportsRtl="true"
         android:theme="@style/Theme.Yds_app"
         tools:targetApi="31">
