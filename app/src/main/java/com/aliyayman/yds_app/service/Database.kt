@@ -27,6 +27,7 @@ abstract class myDatabase : RoomDatabase() {
 
         private fun makeDatabase(context: Context) = Room.databaseBuilder(
             context.applicationContext,myDatabase::class.java,"mydatabase")
+            .fallbackToDestructiveMigration()
             .build()
     }
 }
