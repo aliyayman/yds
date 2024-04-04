@@ -5,8 +5,7 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import com.aliyayman.yds_app.model.Article
-import com.aliyayman.yds_app.model.Category
-import com.aliyayman.yds_app.model.Word
+
 
 @Dao
 interface ArticleDao {
