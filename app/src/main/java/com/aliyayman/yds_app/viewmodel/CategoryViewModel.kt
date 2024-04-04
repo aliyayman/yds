@@ -31,10 +31,11 @@ class CategoryViewModel @Inject constructor(
     fun resfreshCategory() {
         val updateTime = customSharedPreferences.getTime()
         if (updateTime != null && updateTime != 0L && System.nanoTime() - updateTime < refreshTime) {
-            getDataFromRoom()
+             getDataFromRoom()
+           // getFromRemoteConfig()
         } else {
-            getFromRemoteConfig()
-            // getFireStore()
+           // getFromRemoteConfig()
+             getFireStore()
         }
     }
 
@@ -72,7 +73,6 @@ class CategoryViewModel @Inject constructor(
                 .get()
                 .addOnSuccessListener { result ->
                     for (document in result) {
-                        println(document.data)
                         val firebaseCategory = document.toObject(FirebaseCategory::class.java)
                         if (firebaseCategory.categoryId != null) {
                             val category = Category(firebaseCategory.categoryId, firebaseCategory.name)
