@@ -61,7 +61,7 @@ class UploadWorker(val appContext: Context, workerParams: WorkerParameters) :
     }
 
     private fun getArticleFirebase() {
-        println("firebase work")
+        println("firebase article work")
         val db = Firebase.firestore
         launch {
             db.collection("articles")

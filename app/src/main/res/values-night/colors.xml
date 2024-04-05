@@ -6,13 +6,18 @@
     <color name="red">#E11717</color>
     <color name="customBlue">#11C0F7</color>
     <color name="customLightBlue">#E1F4FA</color>
-    <color name="buttonText">#FF000000</color>
-    <color name="buttonBackground">@color/customLightBlue</color>
-    <color name="appBackground">@color/black</color>
+    <color name="buttonText">@color/black</color>
+    <color name="buttonBackground">@color/white</color>
+    <color name="appBackground">@color/customBlue</color>
     <color name="categoryBackground">@color/white</color>
-    <color name="categoryText">@color/customBlue</color>
+    <color name="categoryText">@color/black</color>
     <color name="textColor">@color/white</color>
-    <color name="aricleTextColor">@color/white</color>
+    <color name="aricleTextColor">@color/black</color>
     <color name="aricleTitleColor">@color/red</color>
-    <color name="categoryButtonText">@color/customBlue</color>
+    <color name="categoryButtonText">@color/black</color>
+    <color name="favoriteText">@color/white</color>
+    <color name="testAnswerText">@color/white</color>
+
+
+    #E2F3FA
 </resources>

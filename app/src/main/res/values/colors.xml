@@ -3,6 +3,7 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="blue">#556BE3</color>
+    <color name="green">#11C839</color>
     <color name="red">#E11717</color>
     <color name="customBlue">#11C0F7</color>
     <color name="customLightBlue">#E1F4FA</color>
@@ -15,6 +16,8 @@
     <color name="aricleTextColor">@color/black</color>
     <color name="aricleTitleColor">@color/red</color>
     <color name="categoryButtonText">@color/white</color>
+    <color name="favoriteText">@color/black</color>
+    <color name="testAnswerText">@color/green</color>
 
 
     #E2F3FA

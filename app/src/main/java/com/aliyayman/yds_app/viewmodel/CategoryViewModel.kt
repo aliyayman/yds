@@ -41,6 +41,7 @@ class CategoryViewModel @Inject constructor(
 
     private fun getDataFromRoom() {
         launch {
+            println("category from room")
             val categories = repository.getAllCategories()
             showData(categories)
         }

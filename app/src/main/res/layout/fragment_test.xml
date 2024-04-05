@@ -125,7 +125,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="50dp"
             android:text=""
-            android:textColor="#11C839"
+            android:textColor="@color/testAnswerText"
             android:textSize="20sp"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
