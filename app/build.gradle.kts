@@ -49,6 +49,8 @@ android {
 dependencies {
 
 
+    implementation("com.google.firebase:firebase-inappmessaging-display:21.0.0")
+    implementation("com.google.firebase:firebase-messaging-ktx:24.0.0")
     val navVersion = "2.7.6"
     val retrofitVersion = "2.3.0"
     val rxJavaVersion = "2.1.1"
@@ -91,7 +93,7 @@ dependencies {
     implementation(platform("com.google.firebase:firebase-bom:32.7.1"))
     implementation("com.google.firebase:firebase-config")
     implementation("com.google.firebase:firebase-analytics")
-    implementation("com.google.firebase:firebase-firestore:24.10.2")
+    implementation("com.google.firebase:firebase-firestore:25.0.0")
 
     implementation("androidx.work:work-runtime-ktx:$work_version")
 

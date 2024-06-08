@@ -3,4 +3,5 @@
     <string name="yds_app_name">yds kelimelerim</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="fcm_message">notify</string>
 </resources>
