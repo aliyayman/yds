@@ -27,7 +27,7 @@
             </intent-filter>
         </activity>
         <service
-            android:name=".MyFirebaseMessagingService"
+            android:name=".service.MyFirebaseMessagingService"
             android:exported="true"
             android:permission="android.permission.BIND_JOB_SERVICE">
             <intent-filter>

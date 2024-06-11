@@ -1,4 +1,4 @@
-package com.aliyayman.yds_app
+package com.aliyayman.yds_app.service
 
 import android.Manifest
 import android.app.NotificationChannel
@@ -10,6 +10,7 @@ import android.util.Log
 import androidx.core.app.ActivityCompat
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
+import com.aliyayman.yds_app.R
 import com.aliyayman.yds_app.view.MainActivity
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
