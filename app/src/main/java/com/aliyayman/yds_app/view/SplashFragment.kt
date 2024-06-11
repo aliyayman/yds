@@ -56,7 +56,7 @@ class SplashFragment : Fragment() {
             Snackbar.make(view,"You need to update your application", Snackbar.LENGTH_INDEFINITE).show()
 
         }else{
-            object : CountDownTimer(3000, 1000) {
+            object : CountDownTimer(2000, 1000) {
                 override fun onTick(millisUntilFinished: Long) {
 
                 }
