@@ -10,7 +10,7 @@
   </header>
   <div class="container">
     <h2>Kısa Açıklama</h2>
-    <p>Bu uygulama, kullanıcıların günlük aktivitelerini takip etmelerine ve hedeflerine ulaşmalarına yardımcı olur.</p>
+    <p>Dil öğrenme serüveninizi bir adım öteye taşıyacak yenilikçi bir uygulama ile tanışın! Hemen yeni kelimeleri öğrenmenin ve dil geliştirmenizi geliştirmenin keyfini çıkarın.</p>
     <h2>📚 Özellikler</h2>
     <ul>
       <li>Kullanıcı dostu arayüz</li>
