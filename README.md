@@ -46,8 +46,8 @@
     <h2>🚀 Kurulum</h2>
     <p>Uygulamanın geliştirme ortamında kurulumu için:</p>
     <pre>
-git clone https://github.com/kullaniciadi/proje-adi.git
-cd proje-adi
+git clone https://github.com/aliyayman/yds.git
+cd ydsApp
 flutter pub get
 flutter run
     </pre>
